@@ -1,0 +1,46 @@
+<%- include ("../partials/navbar.ejs") %>
+
+<div class="container">
+  <h1 class="page-header">Edit</h1>
+  <!-- 
+    The actions are linked to the function that will happen to them.
+    The method is set to POST because we are sending data to the server.
+    Once this action is triggered, it will redirect to the reminders page with
+    the updated data.   
+  -->
+  <form action=<%= "/reminder/update/" + reminderItem.id %> method="POST">
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" name="title" class="form-control" id="titleInput" value="<%= reminderItem.title %>">
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea class="form-control" id="descriptionInput" rows="3" placeholder="Description" name="description"><%= reminderItem.description %></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="completed">Completed</label>
+      <div class="radio">
+        <label>
+          <% if (reminderItem.completed == true) { %>
+            <input type="radio" name="completed" id="true" value="true" checked="checked">
+          <% } else { %>
+            <input type="radio" name="completed" id="true" value="true">
+          <% } %>
+          True
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <% if (reminderItem.completed == false) { %>
+            <input type="radio" name="completed" id="false" value="false" checked="checked">
+          <% } else { %>
+            <input type="radio" name="completed" id="false" value="false">
+          <% } %>
+          False
+        </label>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+  </form>
+</div>
