@@ -6,7 +6,10 @@ let remindersController = {
     if (req.user && req.user.role === "admin") {
         res.redirect('/admin');
     } else if (req.user && req.user.role === "regular") {
-      res.render("reminder/index", { reminders: req.user.reminders });
+      const date = new Date();
+      const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+
+      res.render("reminder/index", { reminders: req.user.reminders , daysInMonth : daysInMonth});
     } else {
       res.redirect("/login");
     }
@@ -18,6 +21,7 @@ let remindersController = {
 
   listOne: (req, res) => {
     let reminderToFind = req.params.id;
+    //Alter code to make it so it follows the PRISMA READ template
     let searchResult = req.user.reminders.find(function (reminder) {
       return reminder.id == reminderToFind;
     });
