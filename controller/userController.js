@@ -12,6 +12,7 @@ const getUserByEmailIdAndPassword = (email, password) => {
   }
   return null;
 };
+
 const getUserById = (id) => {
   let user = userModel.findById(id);
   if (user) {

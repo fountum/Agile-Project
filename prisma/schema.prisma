@@ -6,6 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  
 }
 
 datasource db {
@@ -16,9 +17,21 @@ datasource db {
 // This will set the table and have the attributes
 //We might have to change the default auto to something we can do
 model User {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
-  name String
-  email String
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  email    String
   password String
-  role String
+  role     String
+  reminders reminder[]
 }
+
+model reminder {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  dateCreated DateTime @default(now())
+  dateDue     DateTime
+  completed   Boolean
+  user        User    @relation(fields: [userId], references: [id])
+  userId      String @db.ObjectId
+  }

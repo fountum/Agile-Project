@@ -14,16 +14,19 @@ const prisma = new PrismaClient()
 
 async function main() {
   //when main is run, this will create the user in the database
-  await prisma.user.create({
-    data: {
-      name: 'Rich',
-      email: 'hello@prisma.com',
-      password : 'password',
-      role: 'admin',
-    },
-  })
+  // await prisma.user.create({
+  //   data: {
+      
+  //     name: 'Rich',
+  //     email: 'hello@prisma.com',
+  //     password : 'password',
+  //     role: 'admin',
+  //   },
+  // })
 
-  // console.dir(allUsers, { depth: null })
+  // Delete all users
+  // await prisma.user.deleteMany();
+
 }
 
 main()
@@ -40,7 +43,7 @@ main()
 
 
 
-// Deals with the sessions
+// // Deals with the sessions
 // app.set("view engine", "ejs");
 // app.use(express.static(path.join(__dirname, "public")));
 // app.use(

@@ -6,7 +6,7 @@ let remindersController = {
     if (req.user && req.user.role === "admin") {
         res.redirect('/admin');
     } else if (req.user && req.user.role === "regular") {
-      res.render("reminder/index", { reminders: req.user.reminders });
+      res.render("reminder/index", { reminders: req.reminders });
     } else {
       res.redirect("/login");
     }
@@ -18,6 +18,7 @@ let remindersController = {
 
   listOne: (req, res) => {
     let reminderToFind = req.params.id;
+    // alter code so it follows PRISM read documentation
     let searchResult = req.user.reminders.find(function (reminder) {
       return reminder.id == reminderToFind;
     });
@@ -142,24 +143,24 @@ update: async (req, res) => {
 
 };
 
-async function keywordToimage(keyword) {
-  try {
-    const response = await fetch(`https://api.unsplash.com/search/photos?page=1&query=${keyword}&client_id=f1JxwA3wa9KLQchV8RXeo46tX1pyA_79vya7FsAoJrA`);
-    const data = await response.json();
+// async function keywordToimage(keyword) {
+//   try {
+//     const response = await fetch(`https://api.unsplash.com/search/photos?page=1&query=${keyword}&client_id=f1JxwA3wa9KLQchV8RXeo46tX1pyA_79vya7FsAoJrA`);
+//     const data = await response.json();
 
-    if (data.results.length === 0) {
-      console.log("No images found for keyword:", keyword);
-      return null;
-    }
+//     if (data.results.length === 0) {
+//       console.log("No images found for keyword:", keyword);
+//       return null;
+//     }
 
-    const photoUrl = data.results[0].urls.regular;
-    console.log(photoUrl)
-    return photoUrl;
-  } catch (error) {
-    console.log('Error fetching photo:', error);
-    return null;
-  }
-}
+//     const photoUrl = data.results[0].urls.regular;
+//     console.log(photoUrl)
+//     return photoUrl;
+//   } catch (error) {
+//     console.log('Error fetching photo:', error);
+//     return null;
+//   }
+// }
 
 
 module.exports = remindersController;
