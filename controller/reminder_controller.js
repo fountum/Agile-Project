@@ -16,86 +16,89 @@ let remindersController = {
     res.render("reminder/create");
   },
 
-  listOne: (req, res) => {
+  listOne: async (req, res) => {
     let reminderToFind = req.params.id;
-    // alter code so it follows PRISM read documentation
-    let searchResult = req.user.reminders.find(function (reminder) {
-      return reminder.id == reminderToFind;
+  
+    let searchResult = await prisma.reminder.findUnique({
+      where: {
+        id: parseInt(reminderToFind),
+      },
     });
-    if (searchResult != undefined) {
+  
+    if (searchResult != null) {
       res.render("reminder/single-reminder", { reminderItem: searchResult });
     } else {
-      res.render("reminder/index", { reminders: req.user.reminders });
+      let reminders = await prisma.reminder.findMany({
+        where: {
+          userId: req.user.id,
+        },
+      });
+      // Don't know if I should use req.user.reminders here
+      res.render("reminder/index", { reminders: reminders });
     }
   },
 
-
   create: async (req, res) => {
-    let reminder = {
-      id: req.user.reminders.length + 1,
-      title: req.body.title,
-      description: req.body.description,      completed: false,
-    };
-    req.user.reminders.push(reminder);
-    res.redirect("/reminders");
+    let reminder = await prisma.reminder.create({
+      data: {
+        title: req.body.title,
+        description: req.body.description,
+        completed: false,
+        userId: req.user.id,
+      },
+    });
+
+    res.redirect('/reminder/' + reminder.id);
   },
 
-
-  edit: (req, res) => {
+  edit: async (req, res) => {
     let reminderToFind = req.params.id;
-    let searchResult = req.user.reminders.find(function (reminder) {
-      return reminder.id == reminderToFind;
+    let searchResult = await prisma.reminder.findUnique({
+      where: {
+        id: parseInt(reminderToFind),
+      },
     });
     res.render("reminder/edit", { reminderItem: searchResult });
   },
-/*
+
   update: async (req, res) => {
-    let reminderToFind = req.params.id; 
-    req.user.reminders.find(function (reminder) {
-      if (reminder.id == reminderToFind) {
-        reminder.title = req.body.title;
-        const imageUrl = await keywordToimage(req.body.title);
-        reminder.bannerImage = imageUrl;
-        reminder.description = req.body.description;
-        reminder.completed = true ? req.body.completed === "true" : false;
-        return reminder.id
-      }
-    });
-    res.redirect("/reminders");
-  },
-*/
-update: async (req, res) => {
-  try {
+    try {
       let reminderToFind = req.params.id;
-      let reminder = req.user.reminders.find(reminder => reminder.id == reminderToFind);
+      let reminder = await prisma.reminder.findUnique({
+        where: {
+          id: parseInt(reminderToFind),
+        },
+      });
 
       if (!reminder) {
-          return res.status(404).send("Reminder not found");
+        return res.status(404).send("Reminder not found");
       }
-
-      reminder.title = req.body.title;
-      reminder.description = req.body.description;
-      reminder.completed = req.body.completed === "true";
-
-      // Update the banner image
-      const imageUrl = await keywordToimage(req.body.title);
-      reminder.bannerImage = imageUrl;
+      let updatedReminder = await prisma.reminder.update({
+        where: {
+          id: parseInt(reminderToFind),
+        },
+        data: {
+          title: req.body.title,
+          description: req.body.description,
+          completed: req.body.completed === "true",
+        },
+      });
 
       res.redirect("/reminders");
-  } catch (error) {
+    } catch (error) {
       console.error("Error updating reminder:", error);
       res.status(500).send("Server Error");
-  }
-},
+    }
+  },
 
-  delete: (req, res) => {
+  delete: async (req, res) => {
     let reminderToFind = req.params.id;
-    let searchResult = req.user.reminders.find(function (reminder) {
-      return reminder.id == reminderToFind;
-    })
-    req.user.reminders.splice(req.user.reminders.indexOf(searchResult), 1);
+    await prisma.reminder.delete({
+      where: {
+        id: parseInt(reminderToFind),
+      },
+    });
     res.redirect("/reminders");
-
   },
   admin: (req, res) => {
   
@@ -140,25 +143,5 @@ update: async (req, res) => {
     }
 
 };
-
-// async function keywordToimage(keyword) {
-//   try {
-//     const response = await fetch(`https://api.unsplash.com/search/photos?page=1&query=${keyword}&client_id=f1JxwA3wa9KLQchV8RXeo46tX1pyA_79vya7FsAoJrA`);
-//     const data = await response.json();
-
-//     if (data.results.length === 0) {
-//       console.log("No images found for keyword:", keyword);
-//       return null;
-//     }
-
-//     const photoUrl = data.results[0].urls.regular;
-//     console.log(photoUrl)
-//     return photoUrl;
-//   } catch (error) {
-//     console.log('Error fetching photo:', error);
-//     return null;
-//   }
-// }
-
 
 module.exports = remindersController;
