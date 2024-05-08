@@ -1,4 +1,4 @@
-<!-- BASICS -->
+ <!-- BASICS -->
 # Check version of git 
 `git --version`
 

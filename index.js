@@ -16,32 +16,22 @@ const prisma = new PrismaClient()
 
 async function main() {
   for (const user of database) {
-    // Create the user
     const createdUser = await prisma.user.create({
       data: {
         name: user.name,
         email: user.email,
         password: user.password,
         role: user.role,
+        reminders: {
+          create: user.reminders.map(reminder => ({
+            title: reminder.title,
+            description: reminder.description,
+            completed: reminder.completed,
+            dateDue: new Date(),
+          })),
+        },
       },
     });
-
-    // Create the reminders for the user
-    for (const reminder of user.reminders) {
-      await prisma.reminder.create({
-        data: {
-          title: reminder.title,
-          description: reminder.description,
-          completed: reminder.completed,
-          dateDue: new Date(), // replace with actual due date
-          user: {
-            connect: {
-              id: createdUser.id,
-            },
-          },
-        },
-      });
-    }
   }
 }
 
