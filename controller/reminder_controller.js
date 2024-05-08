@@ -34,9 +34,7 @@ let remindersController = {
     let reminder = {
       id: req.user.reminders.length + 1,
       title: req.body.title,
-      description: req.body.description,
-      completed: false,
-      bannerImage: await keywordToimage(req.body.title),
+      description: req.body.description,      completed: false,
     };
     req.user.reminders.push(reminder);
     res.redirect("/reminders");

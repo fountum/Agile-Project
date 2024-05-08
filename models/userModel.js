@@ -124,4 +124,4 @@ const userModel = {
 
 
 
-module.exports = { database, userModel, };
+module.exports = { database, userModel};

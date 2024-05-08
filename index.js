@@ -7,12 +7,44 @@ const reminderController = require("./controller/reminder_controller");
 const authController = require("./controller/auth_controller");
 const session = require("express-session");
 const passport = require("./middleware/passport");
+const { database } = require('./models/userModel.js'); 
+
 
 const { PrismaClient } = require('@prisma/client')
 
 const prisma = new PrismaClient()
 
 async function main() {
+  for (const user of database) {
+    // Create the user
+    const createdUser = await prisma.user.create({
+      data: {
+        name: user.name,
+        email: user.email,
+        password: user.password,
+        role: user.role,
+      },
+    });
+
+    // Create the reminders for the user
+    for (const reminder of user.reminders) {
+      await prisma.reminder.create({
+        data: {
+          title: reminder.title,
+          description: reminder.description,
+          completed: reminder.completed,
+          dateDue: new Date(), // replace with actual due date
+          user: {
+            connect: {
+              id: createdUser.id,
+            },
+          },
+        },
+      });
+    }
+  }
+}
+
   //when main is run, this will create the user in the database
   // await prisma.user.create({
   //   data: {
@@ -27,7 +59,8 @@ async function main() {
   // Delete all users
   // await prisma.user.deleteMany();
 
-}
+
+
 
 main()
   .then(async () => {
