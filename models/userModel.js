@@ -90,18 +90,18 @@ let database = [
 ]
 
 
-
 const userModel = {
   findOne: async (email) => {
-    const user = await prisma.user.findUnique({
+    const users = await prisma.user.findMany({
       where: {
         email: email,
       },
     });
-    if (user) {
-      return user;
+    if (users.length === 0) {
+      return null
     }
-    return null;
+    console.log(users[0])
+    return users[0];
   },
   findById: async (id) => {
     const user = await prisma.user.findUnique({
@@ -109,19 +109,17 @@ const userModel = {
         id: id,
       },
     });
-    if (user) {
-      return user
+    if (!user) {
+      throw new Error(`Couldn't find user with id: ${id}`);
     }
-    throw new Error(`Couldn't find user with id: ${id}`);
-  },
-   
-  addUser: (user) => {
-    user.id = database.length + 1;
-    database.push(user);
     return user;
   },
+  addUser: async (user) => {
+    const newUser = await prisma.user.create({
+      data: user,
+    });
+    return newUser;
+  },
 };
-
-
 
 module.exports = { database, userModel};
