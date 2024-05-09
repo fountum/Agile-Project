@@ -2,7 +2,7 @@ let database = require("../models/userModel").database
 const userController = require("../controller/userController")
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
-
+// import EditorJS from "@editorjs/editorjs";
 
 let remindersController = {
   list: async (req, res) => { //Fully migrated
@@ -69,7 +69,7 @@ let remindersController = {
       data: reminderData
     })
   
-    res.render("reminder")
+    res.redirect("/reminders")
   },
 
   edit: async (req, res) => { // Fully Migrated
