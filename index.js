@@ -12,29 +12,7 @@ const { PrismaClient } = require('@prisma/client')
 
 const prisma = new PrismaClient()
 
-async function main() {
-  //when main is run, this will create the user in the database
-  await prisma.user.create({
-    data: {
-      name: 'Rich',
-      email: 'hello@prisma.com',
-      password : 'password',
-      role: 'admin',
-    },
-  })
 
-  // console.dir(allUsers, { depth: null })
-}
-
-main()
-  .then(async () => {
-    await prisma.$disconnect()
-  })
-  .catch(async (e) => {
-    console.error(e)
-    await prisma.$disconnect()
-    process.exit(1)
-  })
 
 // UNCOMMENT THIS ONCE EVERYTHING IS ALL GOOD TO GO 
 
