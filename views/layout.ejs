@@ -9,32 +9,161 @@
       integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
       crossorigin="anonymous"
     ></script>
+    
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
       integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="/style.css" />
     <style>
+      :root {
+        --today: #9a9898;
+        --hover-color: #9796f070; 
+        --selected: #9796f0;
+        --upcoming-reminder: #f0969670;
+
+        /* from bootstrap style sheet above*/
+        
+      }
+      /* general layout */
+      
       * {
         padding: 0;
         margin: 0;
         box-sizing: border-box;
       }
 
+      .split {
+        display:flex;
+      }
 
-      .calendar {
-        height: 30rem;
-        width: max-content;
-        background-color: white;
-        border-radius: 25px;
+      .box{ 
+        overflow: scroll;
+        max-height: 70vh;
+        margin: 0px 25px 50px 0px;
+      }
+
+      #list-group {
+        margin: 22px 0px 25px 0px;
+        width: 700px;
+      }
+      
+      body {
         overflow: hidden;
-        padding: 35px 50px 0px 50px;
+      }
+
+      /* reminders */
+      .list-group-item {
+        display:flex;
+        flex-direction: column;
+      }
+
+
+      /*reminder list menu*/
+      #reminder-list-menu{
+        display: flex;
+        justify-content: flex-end;
+      }
+      /* create reminder button */
+
+      #create-reminder{
+        margin: 25px 0px 0px  0px;
+      }
+
+      /* reminder dropdown menu */
+      .list-group-item>div{
+        display:flex;
+        flex-direction: row;
+        height:28px;
+      }
+
+      .reminder-button {
+        width: 25px;
+        text-align: center;
+        justify-content: flex-end;
+        margin-left: auto;
+        background-color: white;
+        border:none;
+      }
+
+      .reminder-button:after { 
+        content: '\2807';
+        font-size: 20px;
+      }
+
+      .reminder-menu {
+        display:none;
+        position:absolute;
+        top: 12px;
+        right:42px;
+       
+        background-color: transparent;
+        animation: to-top 0.6s forwards;
+      }
+      
+      .reminder-button:hover + .reminder-menu,
+      .reminder-menu:hover {
+        display:flex;
+        flex-direction: column;
+      }
+
+      /* reminder menu buttons */
+
+      .reminder-menu a,
+      div form .btn-danger {
+        background-color: #e9e9e9;
+        color:black;
+        text-align: center;
+        padding: 3px 16px;
+        margin: 0px;
+        transition: background-color .2s ease-in-out;
+        text-decoration: none;
+        box-shadow: none;
+        border: none;
+      }
+
+      .reminder-menu a:hover,
+      .btn-danger:hover{
+        background-color: var(--hover-color);
+        color:black;
+        transition: background-color .2s ease-in-out; 
+      }
+
+      /* reminder title */
+
+      /* I don't know if it's clear to users that the titles are clickable*/
+      .list-group-item>div>a,
+      .list-group-item>div>a:visited{
+        color: black;
+        padding: 0px 0px 5px 0px;
+        transition: padding .2s ease-in-out;
+      }
+
+      .list-group-item>div>a:hover{
+        text-decoration: none;
+        background-color: var(--hover-color);
+        border-radius: 5%;
+        padding: 0px 5px;
+        transition: padding .2s ease-in-out;
+      }
+
+
+
+      /* calendar */
+      
+      pre { /*overrides bootstrap*/ 
+        color:white;
+        margin-bottom: 0;
       }
 
       .calendar {
-        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        height: 495px;
+        width: max-content;
+        background-color: white;
+        overflow: hidden;
+        padding: 35px 50px 0px 50px;
+        margin: 50px 0px 0px 0px; 
       }
 
       .calendar-header {
@@ -46,6 +175,7 @@
         font-weight: 700;
         color: #ffffff;
         padding: 10px;
+        height:54px;
       }
 
       .calendar-body {
@@ -63,7 +193,6 @@
       .calendar-week-days div:hover {
         color: black;
         transform: scale(1.2);
-        transition: all .2s ease-in-out;
       }
 
       .calendar-week-days div {
@@ -76,8 +205,10 @@
       .calendar-days {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
+        grid-template-rows: repeat(6, 1fr);
         gap: 2px;
         color: #0A0921;
+        animation: to-top 1s forwards;
       }
 
       .calendar-days div {
@@ -89,13 +220,19 @@
         padding: 5px;
         position: relative;
         cursor: pointer;
-        animation: to-top 1s forwards;
       }
 
       .month-picker {
-        padding: 5px 10px;
+        padding: 0px 10px;
         border-radius: 10px;
         cursor: pointer;
+      }
+
+      .month-picker:hover{
+        transform: scale(1.12);
+        transition: all 0.2s ease-in-out;
+        background-color: var(--selected);
+        border-radius: 15%;
       }
 
       .year-picker {
@@ -114,22 +251,24 @@
       }
 
       .year-change:hover {
-        background-color: #9796f0;
+        background-color: var(--selected);
         transition: all .2s ease-in-out;
         transform: scale(1.12);
       }
 
       .calendar-footer {
-        padding: 10px;
+        padding:1.25px;
+        margin-bottom: 10px;
+        margin-top:15px;
         display: flex;
         justify-content: flex-end;
         align-items: center;
+        background-color: var(--today);
       }
 
-      #year:hover {
-        cursor: pointer;
-        transform: scale(1.2);
-        transition: all 0.2 ease-in-out;
+      #year {
+        padding-right: 6px;
+        padding-left: 6px;
       }
 
       .calendar-days div span {
@@ -138,21 +277,21 @@
 
       .calendar-days div:hover {
         transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
-        background-color: #fbc7d4;
+        background-color: var(--hover-color);
         border-radius: 20%;
-        color: #f8fbff;
+        color: black;
       }
 
       .calendar-days div.current-date {
         color: #f8fbff;
-        background-color: #9796f0;
+        background-color: var(--today);
         border-radius: 20%;
       }
 
       .month-list {
         position: relative;
         left: 0;
-        top: -130px;
+        bottom: 315px;
         background-color: #ebebeb;
         color: #151426;
         display: grid;
@@ -175,11 +314,12 @@
       }
 
       .month-list>div>div:hover {
-        background-color: #9796f0;
+        background-color: var(--today);
         color: #f8fbff;
         transform: scale(0.9);
         transition: all 0.2s ease-in-out;
       }
+
 
       .month-list.show {
         visibility: visible;
@@ -204,7 +344,6 @@
         font-family: Dubai Light, Century Gothic;
         position: relative;
         display: flex;
-        top: 50px;
         justify-content: center;
         align-items: center;
       }
@@ -213,7 +352,7 @@
         font-family: Microsoft JhengHei UI;
         font-size: 1.4rem;
         padding-right: 5%;
-        border-right: 3px solid #9796f0;
+        border-right: 3px solid var(--today);
       }
 
       .date-time-value {
@@ -227,38 +366,14 @@
         font-size: 1.5rem;
       }
 
-      .time-formate.hideTime {
-        animation: hidetime 1.5s forwards;
-      }
-
-      .day-text-formate.hidetime {
-        animation: hidetime 1.5s forwards;
-      }
-
-      .date-formate.hideTime {
-        animation: hidetime 1.5s forwards;
-      }
-
-      .day-text-formate.showtime {
-        animation: showtime 1s forwards;
-      }
-
-      .time-formate.showtime {
-        animation: showtime 1s forwards;
-      }
-
-      .date-formate.showtime {
-        animation: showtime 1s forwards;
-      }
-
       @keyframes to-top {
         0% {
-          transform: translateY(0);
+          transform: translateY(-10%);
           opacity: 0;
         }
 
         100% {
-          transform: translateY(100%);
+          transform: translateY(0%);
           opacity: 1;
         }
       }
@@ -476,5 +591,4 @@ setInterval(() => {
       crossorigin="anonymous"
     ></script>
   </body>
-  
 </html>
