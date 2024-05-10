@@ -7,26 +7,37 @@ const prisma = new PrismaClient()
 let remindersController = {
   list: async (req, res) => { //Fully migrated
     // This section finds the reminders that belongs to the user.
+    if (!req.user) {
+      return res.redirect("/login");
+    }
+
     let reminders = await prisma.reminder.findMany({
       where: {
         userId: req.user.id,
       },
     })
+
+    if(reminders.length === 0){
+      return res.redirect("/login")
+    }
     // Debugging purposes
     // console.log(req.user.id)
     // console.log(reminders)
     if (req.user && req.user.role === "admin") {
-        res.redirect('/admin')
+        return res.redirect('/admin')
     } else if (req.user && req.user.role === "regular") {
       // Pass the fetched reminders to the view
       const date = new Date();
       const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
 
-      res.render("reminder/index", { reminders: reminders , daysInMonth : daysInMonth});
+      return res.render("reminder/index", { reminders: reminders , daysInMonth : daysInMonth});
     } else {
-      res.redirect("/login")
+      return res.redirect("/login")
     }
   },
+
+  // ... rest of your code
+
 
   new: (req, res) => {//seperate function
     res.render("reminder/create")
