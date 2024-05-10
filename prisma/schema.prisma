@@ -24,3 +24,6 @@ model reminder {
   title       String
   userId      String   @db.ObjectId
 }
+
+
+
