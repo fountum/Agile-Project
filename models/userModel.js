@@ -1,3 +1,5 @@
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
 let database = [
   {
@@ -88,30 +90,36 @@ let database = [
 ]
 
 
-
 const userModel = {
-  findOne: (email) => {
-    const user = database.find((user) => user.email === email);
-    if (user) {
-      return user;
+  findOne: async (email) => {
+    const users = await prisma.user.findMany({
+      where: {
+        email: email,
+      },
+    });
+    if (users.length === 0) {
+      return null
     }
-    return null;
+    console.log(users[0])
+    return users[0];
   },
-  findById: (id) => {
-    const user = database.find((user) => user.id === id);
-    if (user) {
-      return user
+  findById: async (id) => {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    if (!user) {
+      throw new Error(`Couldn't find user with id: ${id}`);
     }
-    throw new Error(`Couldn't find user with id: ${id}`);
-  },
-   
-  addUser: (user) => {
-    user.id = database.length + 1;
-    database.push(user);
     return user;
+  },
+  addUser: async (user) => {
+    const newUser = await prisma.user.create({
+      data: user,
+    });
+    return newUser;
   },
 };
 
-
-
-module.exports = { database, userModel,  };
+module.exports = { database, userModel};
