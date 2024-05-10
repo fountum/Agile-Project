@@ -5,8 +5,8 @@
 
 <p>Group members:</p>
 
-Andrei Jan Mendoza\n
-Filip Sokic\n
-Jashan Dosanij\n
-Steven Duong\n
-Qiyu Chen\n
+Andrei Jan Mendoza,
+Filip Sokic,
+Jashan Dosanij,
+Steven Duong,
+Qiyu Chen
