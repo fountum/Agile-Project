@@ -13,7 +13,7 @@ const { ensureAuthenticated } = require('./middleware/checkAuth.js')
 const { PrismaClient } = require('@prisma/client')
 
 const prisma = new PrismaClient()
-
+//;alsdkjf;alskdjf;asldkjf;asldkjf;laksf
 // Deals with the sessions
 app.set("view engine", "ejs")
 app.use(express.static(path.join(__dirname, "public")))
