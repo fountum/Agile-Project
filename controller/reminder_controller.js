@@ -22,7 +22,7 @@ let remindersController = {
       const date = new Date();
       const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
 
-      res.render("reminder/index", { reminders: req.user.reminders , daysInMonth : daysInMonth});
+      res.render("reminder/index", { reminders: reminders , daysInMonth : daysInMonth});
     } else {
       res.redirect("/login")
     }
@@ -54,6 +54,7 @@ let remindersController = {
   },
 
   create: async (req, res) => { //Fully Migrated
+    
     let reminderData = {
       title: req.body.title,
       description: req.body.description,
@@ -63,7 +64,12 @@ let remindersController = {
     }
   
     if (req.body.dateDue) {
-      reminderData.dateDue = req.body.dateDue
+      let dateDue = new Date(req.body.dateDue);
+      dateDue.setHours(0);
+      dateDue.setMinutes(0);
+      dateDue.setSeconds(0);
+      dateDue.setMilliseconds(0);
+      reminderData.dateDue = dateDue;
     } else {
       reminderData.dateDue = null 
     }

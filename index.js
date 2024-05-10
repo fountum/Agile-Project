@@ -31,7 +31,7 @@ app.use(
 )
 
 
-
+app.use(express.static('public'));
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(passport.initialize())
@@ -58,6 +58,40 @@ app.get("/reminder/:id/edit", reminderController.edit)
 app.get("/logout", reminderController.logout)
 app.get("/register", authController.register)
 app.get("/login", authController.login)
+
+
+async function getRemindersForDate(dateString) {
+  let date = new Date(dateString);
+  let isoDate = date.toISOString();
+  const reminders = await prisma.reminder.findMany({
+    where: {
+      dateDue: isoDate
+    }
+  });
+  return reminders;
+}
+app.get('/reminders/:date', async (req, res) => {
+  let date = new Date(req.params.date);
+  date.setHours(0);
+  date.setMinutes(0);
+  date.setSeconds(0);
+  date.setMilliseconds(0);
+
+  console.log('date:', date);
+  console.log('userId:', req.user.id);
+
+  let reminders = await prisma.reminder.findMany({
+    where: {
+      dateDue: date,
+      userId: req.user.id  // Replace with the actual user ID
+    }
+  });
+
+  console.log('reminders:', reminders);
+
+  res.json(reminders);
+});
+
 //Deals with the CRUD method of POST
 app.post("/reminder/", ensureAuthenticatedForCreate,reminderController.create)
 app.post("/reminder/update/:id", reminderController.update)
