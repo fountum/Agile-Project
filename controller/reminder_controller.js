@@ -19,7 +19,10 @@ let remindersController = {
         res.redirect('/admin')
     } else if (req.user && req.user.role === "regular") {
       // Pass the fetched reminders to the view
-      res.render("reminder/index", { reminders: reminders })
+      const date = new Date();
+      const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+
+      res.render("reminder/index", { reminders: req.user.reminders , daysInMonth : daysInMonth});
     } else {
       res.redirect("/login")
     }

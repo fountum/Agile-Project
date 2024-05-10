@@ -69,8 +69,6 @@ app.post("/login", authController.loginSubmit)
 
 
 
-
-
 app.listen(3090, function () {
   console.log(passport.session())
   console.log(
