@@ -1,165 +1,197 @@
-let database = require("../models/userModel").database;
+let database = require("../models/userModel").database
+const userController = require("../controller/userController")
+const { PrismaClient } = require('@prisma/client')
+const prisma = new PrismaClient()
+// import EditorJS from "@editorjs/editorjs";
 
 let remindersController = {
-  list: (req, res) => {
-    // console.log(req.user)
+  list: async (req, res) => { //Fully migrated
+    // This section finds the reminders that belongs to the user.
+    if (!req.user) {
+      return res.redirect("/login");
+    }
+
+    let reminders = await prisma.reminder.findMany({
+      where: {
+        userId: req.user.id,
+      },
+    })
+
+    if(reminders.length === 0){
+      return res.redirect("/login")
+    }
+    // Debugging purposes
+    // console.log(req.user.id)
+    // console.log(reminders)
     if (req.user && req.user.role === "admin") {
-        res.redirect('/admin');
+        return res.redirect('/admin')
     } else if (req.user && req.user.role === "regular") {
-      res.render("reminder/index", { reminders: req.user.reminders });
+      // Pass the fetched reminders to the view
+      const date = new Date();
+      const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+
+      return res.render("reminder/index", { reminders: reminders , daysInMonth : daysInMonth});
     } else {
-      res.redirect("/login");
+      return res.redirect("/login")
     }
   },
 
-  new: (req, res) => {
-    res.render("reminder/create");
+  // ... rest of your code
+
+
+  new: (req, res) => {//seperate function
+    res.render("reminder/create")
   },
 
-  listOne: (req, res) => {
-    let reminderToFind = req.params.id;
-    let searchResult = req.user.reminders.find(function (reminder) {
-      return reminder.id == reminderToFind;
-    });
-    if (searchResult != undefined) {
-      res.render("reminder/single-reminder", { reminderItem: searchResult });
+  listOne: async (req, res) => {//Fully migrated
+    let reminderToFind = req.params.id
+  
+    let searchResult = await prisma.reminder.findUnique({
+      where: {
+        id: reminderToFind,
+      },
+    })
+  
+    if (searchResult != null) {
+      res.render("reminder/single-reminder", { reminderItem: searchResult })
     } else {
-      res.render("reminder/index", { reminders: req.user.reminders });
+      let reminders = await prisma.reminder.findMany({
+        where: {
+          userId: req.user.id,
+        },
+      })
+      res.render("reminder/index", { reminders: reminders })
     }
   },
 
-
-  create: async (req, res) => {
-    let reminder = {
-      id: req.user.reminders.length + 1,
+  create: async (req, res) => { //Fully Migrated
+    
+    let reminderData = {
       title: req.body.title,
       description: req.body.description,
       completed: false,
-      bannerImage: await keywordToimage(req.body.title),
-    };
-    req.user.reminders.push(reminder);
-    res.redirect("/reminders");
+      userId: req.user.id,
+      dateCreated: new Date()
+    }
+  
+    if (req.body.dateDue) {
+      let dateDue = new Date(req.body.dateDue);
+      dateDue.setHours(0);
+      dateDue.setMinutes(0);
+      dateDue.setSeconds(0);
+      dateDue.setMilliseconds(0);
+      reminderData.dateDue = dateDue;
+    } else {
+      reminderData.dateDue = null 
+    }
+  
+    let newReminder = await prisma.reminder.create({
+      data: reminderData
+    })
+  
+    res.redirect("/reminders")
+  },
+
+  edit: async (req, res) => { // Fully Migrated
+    let reminderToFind = req.params.id
+    let searchResult = await prisma.reminder.findUnique({
+      where: {
+        id: reminderToFind,
+      },
+    })
+    res.render("reminder/edit", { reminderItem: searchResult })
   },
 
 
-  edit: (req, res) => {
-    let reminderToFind = req.params.id;
-    let searchResult = req.user.reminders.find(function (reminder) {
-      return reminder.id == reminderToFind;
-    });
-    res.render("reminder/edit", { reminderItem: searchResult });
-  },
-/*
+
+
+
   update: async (req, res) => {
-    let reminderToFind = req.params.id; 
-    req.user.reminders.find(function (reminder) {
-      if (reminder.id == reminderToFind) {
-        reminder.title = req.body.title;
-        const imageUrl = await keywordToimage(req.body.title);
-        reminder.bannerImage = imageUrl;
-        reminder.description = req.body.description;
-        reminder.completed = true ? req.body.completed === "true" : false;
-        return reminder.id
-      }
-    });
-    res.redirect("/reminders");
-  },
-*/
-update: async (req, res) => {
-  try {
-      let reminderToFind = req.params.id;
-      let reminder = req.user.reminders.find(reminder => reminder.id == reminderToFind);
+    try {
+      let reminderToFind = req.params.id
+      let reminder = await prisma.reminder.findUnique({
+        where: {
+          id: reminderToFind,
+        },
+      })
 
       if (!reminder) {
-          return res.status(404).send("Reminder not found");
+        return res.status(404).send("Reminder not found")
       }
+      let updatedReminder = await prisma.reminder.update({
+        where: {
+          id: reminderToFind,
+        },
+        data: {
+          title: req.body.title,
+          description: req.body.description,
+          completed: req.body.completed === "true",
+        },
+      })
 
-      reminder.title = req.body.title;
-      reminder.description = req.body.description;
-      reminder.completed = req.body.completed === "true";
+      res.redirect("/reminders")
+    } catch (error) {
+      console.error("Error updating reminder:", error)
+      res.status(500).send("Server Error")
+    }
+  },
 
-      // Update the banner image
-      const imageUrl = await keywordToimage(req.body.title);
-      reminder.bannerImage = imageUrl;
 
-      res.redirect("/reminders");
-  } catch (error) {
-      console.error("Error updating reminder:", error);
-      res.status(500).send("Server Error");
-  }
-},
 
-  delete: (req, res) => {
-    let reminderToFind = req.params.id;
-    let searchResult = req.user.reminders.find(function (reminder) {
-      return reminder.id == reminderToFind;
+
+
+
+  delete: async (req, res) => {
+    let reminderToFind = req.params.id
+    await prisma.reminder.delete({
+      where: {
+        id: reminderToFind,
+      },
     })
-    req.user.reminders.splice(req.user.reminders.indexOf(searchResult), 1);
-    res.redirect("/reminders");
-
+    res.redirect("/reminders")
   },
   admin: (req, res) => {
   
     req.sessionStore.all((err, sessions) => {
       if (err) {
-        console.log(err);
-        return res.redirect("/login");
+        console.log(err)
+        return res.redirect("/login")
       }
   
-      console.log(sessions);
+      console.log(sessions)
   
-      let sessionList = [];
+      let sessionList = []
       for (let key in sessions) {
         if (req.user.id != sessions[key].passport.user) {
           console.log(key)
           sessionList.push({"SessionID":key, "UserID":sessions[key].passport.user})
         }
       }
-      res.render("admin", { user: req.user, sessions: sessionList });
-    });
+      res.render("admin", { user: req.user, sessions: sessionList })
+    })
   
   },
   destroy: (req, res) => {
-    const sessionId = req.params.sessionId;
+    const sessionId = req.params.sessionId
     req.sessionStore.destroy(sessionId, (err) => {
       if (err) {
-        console.log(err);
+        console.log(err)
         res.redirect("/admin")
       } else {
-        res.redirect('/admin');
+        res.redirect('/admin')
       }
-    });
+    })
   },
 
   logout: (req, res) => {
       req.session.destroy((err) => {
         if (err) {
-          console.log(err);
+          console.log(err)
         }
-        res.redirect('/login'); 
-      });
+        res.redirect('/login') 
+      })
     }
 
-};
-
-async function keywordToimage(keyword) {
-  try {
-    const response = await fetch(`https://api.unsplash.com/search/photos?page=1&query=${keyword}&client_id=f1JxwA3wa9KLQchV8RXeo46tX1pyA_79vya7FsAoJrA`);
-    const data = await response.json();
-
-    if (data.results.length === 0) {
-      console.log("No images found for keyword:", keyword);
-      return null;
-    }
-
-    const photoUrl = data.results[0].urls.regular;
-    console.log(photoUrl)
-    return photoUrl;
-  } catch (error) {
-    console.log('Error fetching photo:', error);
-    return null;
-  }
 }
 
-
-module.exports = remindersController;
+module.exports = remindersController

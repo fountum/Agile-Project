@@ -22,3 +22,11 @@ model User {
   password String
   role String
 }
+
+model note {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  content     String
+  dateCreated DateTime @db.Date
+  title       String
+  userId      String   @db.ObjectId
+}
