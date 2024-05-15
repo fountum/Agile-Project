@@ -25,6 +25,9 @@ const prisma = new PrismaClient()
 //;alsdkjf;alskdjf;asldkjf;asldkjf;laksf
 
 
+// UNCOMMENT THIS ONCE EVERYTHING IS ALL GOOD TO GO 
+
+
 // Deals with the sessions
 app.set("view engine", "ejs")
 app.use(express.static(path.join(__dirname, "public")))

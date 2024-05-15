@@ -82,3 +82,27 @@
     </div>
   </div>
 </div>
+        
+        <% reminders.forEach(function (reminderItem) { %>
+          <li class="list-group-item">
+            <div><a href=<%= "/reminder/" + reminderItem.id %>><strong><%= reminderItem.title %></strong></a>
+              <div class="reminder-button"></div>
+              <div class="reminder-menu"> 
+                <a href=<%= "/reminder/" + reminderItem.id + "/edit" %>>Edit</a>
+                <form class="deleteForm "method="POST" action=<%= "/reminder/delete/" + reminderItem.id %>>
+                  <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+              </div>
+            </div>
+            <!-- Uncomment when reminder date funcationality is added
+              maybe make the date clickable so it filters by date similar to how the calendar works
+              <em class='reminder-due'>Due date place holder</em>
+            -->
+            <%= reminderItem.description %>
+          </li>
+        <% }) %>
+      </ul>
+    </div>
+  </div>
+</div>
+
