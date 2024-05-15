@@ -42,29 +42,6 @@ describe('User model test', () => {
 
 });
 
-// =======================
-// jest.mock('../models/userModel.js', () => ({
-//   userModel: {
-//     addUser: jest.fn().mockResolvedValue({ id: '1', name: 'Test User', email: 'test@example.com', password: 'password', role: 'regular' }),
-//     findById: jest.fn((id) => {
-//       if (id === '1') {
-//         return Promise.resolve({ id: '1', name: 'Test User', email: 'test@example.com', password: 'password', role: 'regular' });
-//       } else {
-//         return Promise.resolve(null);
-//       }
-//     }),
-//   },
-// }));
-
-// describe('User model test', () => {
-
-//   it('should return null if the user is not found', async () => {
-//     const user = await userModel.findById('30');
-//     expect(user).toBeNull();
-//   })
-
-// });
-// ======================= REMINDERS TEST ==========================================
 
 jest.mock('../controller/reminder_controller', () => ({
   create: jest.fn().mockResolvedValue({ id: '1', userId: '1', title: 'Test Reminder', description: 'This is a test reminder', date: new Date() }),
