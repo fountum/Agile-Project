@@ -1,0 +1,10 @@
+<%- include('layout') %>
+
+<section class="create-note">
+    <h1>Create Note</h1>
+    <form action="/notes/create" method="POST">
+        <input type="text" name="title" placeholder="Title">
+        <textarea name="content" placeholder="Your note content"></textarea>
+        <button type="submit">Create</button>
+    </form>
+</section>

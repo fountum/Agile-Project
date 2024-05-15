@@ -24,3 +24,11 @@ model reminder {
   title       String
   userId      String   @db.ObjectId
 }
+
+model note {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  content     String
+  dateCreated DateTime @db.Date
+  title       String
+  userId      String   @db.ObjectId
+}

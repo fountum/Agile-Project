@@ -2,20 +2,39 @@ let database = require("../models/userModel").database
 const userController = require("../controller/userController")
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
+<<<<<<< HEAD
 
+=======
+// import EditorJS from "@editorjs/editorjs";
+>>>>>>> EJS
 
 let remindersController = {
   list: async (req, res) => { //Fully migrated
     // This section finds the reminders that belongs to the user.
+<<<<<<< HEAD
+=======
+    if (!req.user) {
+      return res.redirect("/login");
+    }
+
+>>>>>>> EJS
     let reminders = await prisma.reminder.findMany({
       where: {
         userId: req.user.id,
       },
     })
+<<<<<<< HEAD
+=======
+
+    if(reminders.length === 0){
+      return res.redirect("/login")
+    }
+>>>>>>> EJS
     // Debugging purposes
     // console.log(req.user.id)
     // console.log(reminders)
     if (req.user && req.user.role === "admin") {
+<<<<<<< HEAD
         res.redirect('/admin')
     } else if (req.user && req.user.role === "regular") {
       // Pass the fetched reminders to the view
@@ -25,6 +44,23 @@ let remindersController = {
     }
   },
 
+=======
+        return res.redirect('/admin')
+    } else if (req.user && req.user.role === "regular") {
+      // Pass the fetched reminders to the view
+      const date = new Date();
+      const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+
+      return res.render("reminder/index", { reminders: reminders , daysInMonth : daysInMonth});
+    } else {
+      return res.redirect("/login")
+    }
+  },
+
+  // ... rest of your code
+
+
+>>>>>>> EJS
   new: (req, res) => {//seperate function
     res.render("reminder/create")
   },
@@ -51,6 +87,10 @@ let remindersController = {
   },
 
   create: async (req, res) => { //Fully Migrated
+<<<<<<< HEAD
+=======
+    
+>>>>>>> EJS
     let reminderData = {
       title: req.body.title,
       description: req.body.description,
@@ -60,7 +100,16 @@ let remindersController = {
     }
   
     if (req.body.dateDue) {
+<<<<<<< HEAD
       reminderData.dateDue = req.body.dateDue
+=======
+      let dateDue = new Date(req.body.dateDue);
+      dateDue.setHours(0);
+      dateDue.setMinutes(0);
+      dateDue.setSeconds(0);
+      dateDue.setMilliseconds(0);
+      reminderData.dateDue = dateDue;
+>>>>>>> EJS
     } else {
       reminderData.dateDue = null 
     }
@@ -69,7 +118,11 @@ let remindersController = {
       data: reminderData
     })
   
+<<<<<<< HEAD
     res.render("reminder")
+=======
+    res.redirect("/reminders")
+>>>>>>> EJS
   },
 
   edit: async (req, res) => { // Fully Migrated
