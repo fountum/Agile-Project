@@ -8,6 +8,7 @@ const authController = require("./controller/auth_controller")
 const noteController = require("./controller/note_controller")
 const session = require("express-session")
 const passport = require("./middleware/passport")
+const methodOverride = require('method-override')
 // const { database } = require('./models/userModel.js') 
 const { ensureAuthenticated } = require('./middleware/checkAuth.js')
 
@@ -32,7 +33,6 @@ app.use(
 )
 
 
-
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(passport.initialize())
@@ -40,6 +40,8 @@ app.use(passport.session())
 app.use(ejsLayouts)
 app.use(passport.initialize())
 app.use(passport.session())
+app.use(methodOverride('_method'))
+
 
 function ensureAuthenticatedForCreate(req, res, next) {
   if (req.isAuthenticated()) {
@@ -81,13 +83,11 @@ app.get("/note/new", noteController.new)
 app.get("/note/:id", noteController.listOne)
 app.get("/note/:id/edit", noteController.edit)
 app.post("/note/", ensureAuthenticatedForCreate, noteController.create)
-app.post("/note/update/:id", noteController.update)
-app.post("/note/delete/:id", noteController.delete)
+app.put("/note/update/:id", noteController.update)
+app.delete("/note/delete/:id", noteController.delete)
 
 app.get("/logout", noteController.logout)
 app.post("/logout", noteController.logout)
-
-
 
 app.listen(3090, function () {
   console.log(passport.session())
