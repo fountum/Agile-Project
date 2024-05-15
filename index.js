@@ -17,7 +17,7 @@ const methodOverride = require('method-override')
 // const { database } = require('./models/userModel.js') 
 
 const { ensureAuthenticated } = require('./middleware/checkAuth.js')
-
+// PLESLKDJF:LSDKJF:SLDJF:SDLKFJ:LSDKFJ:LSDKKJF:LSDFJ:LSDJF:LKSKFJ:KLSDJ
 const { PrismaClient } = require('@prisma/client')
 
 const prisma = new PrismaClient()
