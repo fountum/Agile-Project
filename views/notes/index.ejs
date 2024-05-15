@@ -1,0 +1,15 @@
+<%- include('layout') %>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+
+<section class="notes">
+    <h1>All Notes</h1>
+    <ul>
+        <% notes.forEach(function(note) { %>
+            <li>
+                <h2><%= note.title %></h2>
+                <p><%= note.content %></p>
+                <a href="/notes/<%= note.id %>">View</a>
+            </li>
+        <% }); %>
+    </ul>
+</section>

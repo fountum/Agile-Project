@@ -12,6 +12,7 @@ model User {
   email    String
   name     String
   password String
+<<<<<<< HEAD
   role     String
 }
 
@@ -27,3 +28,15 @@ model reminder {
 
 
 
+=======
+  role String
+}
+
+model note {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  content     String
+  dateCreated DateTime @db.Date
+  title       String
+  userId      String   @db.ObjectId
+}
+>>>>>>> EJS
