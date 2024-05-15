@@ -12,7 +12,7 @@ let notesController = {
     if (req.user && req.user.role === "admin") {
         res.redirect('/admin')
     } else if (req.user && req.user.role === "regular") {
-      res.render("note/index", { notes: notes })
+      res.render("note/notes", { notes: notes })
     } else {
       res.redirect("/login")
     }
@@ -41,17 +41,18 @@ let notesController = {
     }
   },
 
-  create: async (req, res) => {
-    let noteData = {
-      title: req.body.title,
-      content: JSON.parse(req.body.content),
-      userId: req.user.id,
-      dateCreated: new Date()
-    }
-    let newNote = await prisma.note.create({
-      data: noteData
-    })
-    res.render("note")
+  // Changed this
+ create: async (req, res) => {
+    const newNote = await prisma.note.create({
+      data: {
+        title: req.body.title,
+        content: req.body.content,
+        dateCreated: new Date(),
+        userId: req.user.id, 
+      },
+    });
+
+    res.json(newNote);
   },
 
   edit: async (req, res) => {

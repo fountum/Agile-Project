@@ -75,19 +75,19 @@ app.get("/login", authController.login)
 app.post("/login", authController.loginSubmit)
 
 // Note routes
-app.get("/", noteController.list) 
+ 
 app.get("/notes", noteController.list)
-app.get("/admin", noteController.admin)
-app.get("/destroy/:sessionId", noteController.destroy)
-app.get("/note/new", noteController.new)
-app.get("/note/:id", noteController.listOne)
-app.get("/note/:id/edit", noteController.edit)
-app.post("/note/", ensureAuthenticatedForCreate, noteController.create)
-app.put("/note/update/:id", noteController.update)
-app.delete("/note/delete/:id", noteController.delete)
+// app.get("/admin", noteController.admin)
+// app.get("/destroy/:sessionId", noteController.destroy)
+// app.get("/note/new", noteController.new)
+// app.get("/note/:id", noteController.listOne)
+// app.get("/note/:id/edit", noteController.edit)
+// app.post("/note/", ensureAuthenticatedForCreate, noteController.create)
+// app.put("/note/update/:id", noteController.update)
+// app.delete("/note/delete/:id", noteController.delete)
 
-app.get("/logout", noteController.logout)
-app.post("/logout", noteController.logout)
+// app.get("/logout", noteController.logout)
+// app.post("/logout", noteController.logout)
 
 app.listen(3090, function () {
   console.log(passport.session())
