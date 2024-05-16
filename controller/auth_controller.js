@@ -39,10 +39,6 @@ let authController = {
             message: "User with this email already exists.",
           })
         } else {
-<<<<<<< HEAD
-          const hashedPassword = await bcrypt.hash(password, 10)
-=======
->>>>>>> EJS
           const newUser = await userModel.addUser({
             name: name,
             email: email,
@@ -55,11 +51,7 @@ let authController = {
       } catch (error) {
         console.error(error)
         res.render("auth/register", {
-<<<<<<< HEAD
-          message: "An error occurred while registering. Please try again.",
-=======
           message: "An error occurred while registering. Please try again.",  
->>>>>>> EJS
         })
       }
     }

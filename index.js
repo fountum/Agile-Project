@@ -9,11 +9,12 @@ const session = require("express-session")
 const passport = require("./middleware/passport")
 const { database } = require('./models/userModel.js') 
 const noteController = require("./controller/note_controller")
-const session = require("express-session")
-const passport = require("./middleware/passport")
 const methodOverride = require('method-override')
 // const { database } = require('./models/userModel.js') 
 const { ensureAuthenticated } = require('./middleware/checkAuth.js')
+
+
+
 
 const { PrismaClient } = require('@prisma/client')
 
@@ -77,20 +78,10 @@ app.post("/register", authController.registerSubmit)
 app.get("/login", authController.login)
 app.post("/login", authController.loginSubmit)
 
-// Note routes
-app.get("/", noteController.list) 
-app.get("/notes", noteController.list)
-app.get("/admin", noteController.admin)
-app.get("/destroy/:sessionId", noteController.destroy)
-app.get("/note/new", noteController.new)
-app.get("/note/:id", noteController.listOne)
-app.get("/note/:id/edit", noteController.edit)
-app.post("/note/", ensureAuthenticatedForCreate, noteController.create)
-app.put("/note/update/:id", noteController.update)
-app.delete("/note/delete/:id", noteController.delete)
 
-app.get("/logout", noteController.logout)
-app.post("/logout", noteController.logout)
+app.get('/notes', (req, res) => {
+  res.redirect("http://localhost:5173")
+})
 
 app.listen(3090, function () {
   console.log(passport.session())
