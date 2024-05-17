@@ -6,6 +6,7 @@
   "scripts": {
     "migrate": "npx prisma migrate dev",
     "test": "jest",
+    "test:coverage": "jest --coverage",
     "start": "nodemon"
   },
   "repository": {
