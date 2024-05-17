@@ -17,9 +17,6 @@ let remindersController = {
       },
     })
 
-    if(reminders.length === 0){
-      return res.redirect("/login")
-    }
     // Debugging purposes
     // console.log(req.user.id)
     // console.log(reminders)
@@ -35,8 +32,6 @@ let remindersController = {
       return res.redirect("/login")
     }
   },
-
-  // ... rest of your code
 
 
   new: (req, res) => {//seperate function
