@@ -5,7 +5,7 @@
     </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css">
+    
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -16,10 +16,7 @@
   </head>
   <body>
     <div> 
-    <!-- NOTE:THIS IS COPIED FROM (A PROBABLY OUTDATED VERSION OF) NAVBAR.EJS!!!
-      THESE BUTTONS ARE FAKE AND NON-FUNCTIONAL
-    FIX THIS LATER -STEVEN
-    -->
+    
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="/reminders">MemoMind</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,7 +32,21 @@
         <a href="/logout" class="btn btn-secondary" id="btn-logout">Logout</a>
       </nav>  
     </div>
-    <div id="root"></div>
+
+
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-2">
+          <!-- Your first div here -->
+        </div>
+        <div class="col-10" id="root" style="background-color: white;">
+          <!-- Your root div here -->
+        </div>
+      </div>
+    </div>
+
+
     <script type="module" src="./main.tsx"></script>
   </body>
 </html>
