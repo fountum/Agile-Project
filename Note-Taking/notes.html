@@ -1,0 +1,74 @@
+<html lang="en">
+  <head>
+    <script>
+      <!-- AUTO-GENERATED FILE, DO NOT EDIT DIRECTLY -->
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+      crossorigin="anonymous"
+    />
+    <style>
+      .notebook-holder {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+      
+      .notebook {
+        border: black 2px solid;
+        flex: 0 0 calc(33.33% - 10px); /* 33.33% for 3 items per row, 10px for margin */
+        height: 500px;
+        margin: 5px; /* Adjust as needed */
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+        }
+
+        .notebook.show {
+        opacity: 1;
+        }
+      .newbook{
+        border: black 2px solid;
+        flex: 0 0 calc(33.33% - 10px); /* 33.33% for 3 items per row, 10px for margin */
+        height: 500px;
+        margin: 5px; 
+      }
+    </style>
+    <title>Basic Setup</title>
+  </head>
+  <body>
+    <div> 
+    
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/reminders">MemoMind</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <a class="nav-item nav-link" href="http://localhost:3090/reminders">Reminders</a>
+            <a class="nav-item nav-link" href="/notes">Notes</a>
+          </div>
+        </div>
+        <a href="index.html" class="btn btn-secondary" id="btn-logout">Back</a>
+      </nav>  
+    </div>
+
+<!-- THIS IS NEW SHIT -->
+   
+  <div class="col-10" id="root">
+
+
+
+    <script type="module" src="./main.tsx"></script>
+    <script>
+document.addEventListener('DOMContentLoaded', (event) => {
+
+});
+  </script>
+  </body>
+</html>

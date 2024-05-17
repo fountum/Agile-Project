@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "mongodb"
-  url      = env("DATABASE_URL")
+  url      = "mongodb+srv://ajhmendoza30:xu2Uqghh6VLl8V7x@cluster0.g4cpyqm.mongodb.net/User"
 }
 
 model User {
@@ -16,13 +16,13 @@ model User {
 }
 
 model reminder {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
   completed   Boolean
-  dateCreated DateTime @db.Date
-  dateDue     DateTime?
+  dateCreated DateTime  @db.Date
+  dateDue     DateTime? @db.Date
   description String
   title       String
-  userId      String   @db.ObjectId
+  userId      String    @db.ObjectId
 }
 
 model note {

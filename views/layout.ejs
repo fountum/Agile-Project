@@ -646,20 +646,37 @@ document.querySelector('#next-year').onclick = () => {
     let daysInMonth = getDaysInMonth(month, year);
     let calendarDays = document.querySelector('.calendar-days');
     calendarDays.innerHTML = '';
-    for(let i = 1; i <= daysInMonth; i++) {
-      let button = document.createElement('button');
-      button.classList.add('date-button');
-      button.dataset.date = i;
-      button.textContent = i;
-      button.addEventListener('click', event => {
-      let date = event.target.dataset.date;
-      let month = currentMonth.value + 1; // JavaScript months are 0-based
-      let year = currentYear.value;
-      let fullDate = `${year}-${month.toString().padStart(2, '0')}-${date.padStart(2, '0')}`;
+    // Get the first day of the month
+    let firstDay = new Date(currentYear.value, currentMonth.value, 1).getDay();
+    
 
-      fetch(`/reminders/${fullDate}`)
-      .then(response => response.json())
-      .then(reminders => {
+// Create empty elements for each day of the week before the first day of the month
+for(let i = 0; i < firstDay; i++) {
+  let span = document.createElement('span');
+  calendarDays.appendChild(span);
+}
+
+
+
+
+
+      for(let i = 1; i <= daysInMonth; i++) {
+        console.log
+        let span = document.createElement('span');
+        span.classList.add('date-button');
+        span.dataset.date = i;
+        span.textContent = i;
+        span.addEventListener('click', event => {
+        let date = event.target.dataset.date;
+        console.log("THIS IS THE DATE")
+        console.log(date)
+        let month = currentMonth.value + 1; // JavaScript months are 0-based
+        let year = currentYear.value;
+        let fullDate = `${year}-${month.toString().padStart(2, '0')}-${date.padStart(2, '0')}`;
+        console.log(fullDate)
+        fetch(`/reminders/${fullDate}`)
+        .then(response => response.json())
+        .then(reminders => {
         // Get the container
         let container = document.getElementById('list-group');
 
@@ -671,6 +688,9 @@ document.querySelector('#next-year').onclick = () => {
           // Add the new reminders
           // Add the new reminders
           reminders.forEach(reminder => {
+  let dueDate = new Date(reminder.dateDue);
+let localDueDate = dueDate.toLocaleString();
+console.log(localDueDate);
   let reminderElement = document.createElement('li');
   reminderElement.className = 'list-group-item';
 
@@ -709,11 +729,11 @@ document.querySelector('#next-year').onclick = () => {
   form.appendChild(button);
 
   if (reminder.dueDate) {
-    let dueDateEm = document.createElement('em');
-    dueDateEm.className = 'reminder-due';
-    dueDateEm.textContent = reminder.dueDate;  // Replace with the actual reminder due date
-    reminderElement.appendChild(dueDateEm);
-  }
+  let dueDateEm = document.createElement('em');
+  dueDateEm.className = 'reminder-due';
+  dueDateEm.textContent = reminder.dueDate;  // Display the date directly
+  reminderElement.appendChild(dueDateEm);
+}
 
   let descriptionP = document.createElement('p');
   descriptionP.textContent = reminder.description;  // Replace with the actual reminder description
@@ -737,7 +757,7 @@ document.querySelector('#next-year').onclick = () => {
         console.error('Error:', error);
       });
     });
-      calendarDays.appendChild(button);
+      calendarDays.appendChild(span);
     }
   }
 
@@ -747,25 +767,7 @@ document.querySelector('#next-year').onclick = () => {
 
   // Call updateCalendarDays with the current month and year
   updateCalendarDays(currentMonth.value, currentYear.value);
-  // });
-//   let selectedDate = new Date();  // Default to today's date
 
-// dayButton.addEventListener('click', () => {
-//   // ...
-//   selectedDate = new Date(year, month, day);
-// });
-
-// let createButton = document.getElementById('create-reminder');  // Replace with the actual id of your "Create" button
-
-// if (createButton) {
-//   console.log("WORDS")
-//   createButton.addEventListener('click', () => {
-//     let dateInput = document.getElementById('dateDueInput');  // Replace with the actual id of your date input
-//     if (dateInput) {
-//       dateInput.value = selectedDate.toISOString().substring(0, 10);  // Format the date as YYYY-MM-DD
-    // }
-  // });
-// }
 
 
   </script>

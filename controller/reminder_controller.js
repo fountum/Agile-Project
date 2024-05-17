@@ -58,6 +58,7 @@ let remindersController = {
       let reminders = await prisma.reminder.findMany({
         where: {
           userId: req.user.id,
+          dateDue: new Date(year, month - 1, day),  // JavaScript's Date object uses 0-based months
         },
       })
       res.render("reminder/index", { reminders: reminders })
