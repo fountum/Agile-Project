@@ -37,7 +37,6 @@ app.use(
     cookie: {
       httpOnly: true,
       secure: false,
-      maxAge: 24 * 60 * 60 * 1000,
     },
   })
 )
@@ -143,11 +142,26 @@ app.get("/register", authController.register)
 app.post("/register", authController.registerSubmit)
 app.get("/login", authController.login)
 app.post("/login", authController.loginSubmit)
+app.get('/reminders/:date', async (req, res) => {
+  const date = req.params.date;
+  const reminders = await prisma.reminder.findMany({
+    where: {
+      dateDue: new Date(date),
+    },
+  });
+  res.json(reminders);
+});
 
 
+
+// ROUTES FOR THE NOTE TAKING STUFF
 app.get('/notes', (req, res) => {
-  res.redirect("http://localhost:5173")
-})
+  const userId = req.session.id;
+  res.redirect(`http://localhost:5173?userId=${userId}`);
+});
+
+
+
 // Note routes
 
 

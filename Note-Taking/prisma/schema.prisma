@@ -1,0 +1,34 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = "mongodb+srv://ajhmendoza30:xu2Uqghh6VLl8V7x@cluster0.g4cpyqm.mongodb.net/User"
+}
+
+model User {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  email    String
+  name     String
+  password String
+  role     String
+}
+
+model reminder {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  completed   Boolean
+  dateCreated DateTime  @db.Date
+  dateDue     DateTime? @db.Date
+  description String
+  title       String
+  userId      String    @db.ObjectId
+}
+
+model note {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  content     String
+  dateCreated DateTime @db.Date
+  title       String
+  userId      String   @db.ObjectId
+}
