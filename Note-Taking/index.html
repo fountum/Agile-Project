@@ -5,9 +5,36 @@
     </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+      crossorigin="anonymous"
+    />
     <title>Basic Setup</title>
   </head>
   <body>
+    <div> 
+    <!-- NOTE:THIS IS COPIED FROM (A PROBABLY OUTDATED VERSION OF) NAVBAR.EJS!!!
+      THESE BUTTONS ARE FAKE AND NON-FUNCTIONAL
+    FIX THIS LATER -STEVEN
+    -->
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/reminders">MemoMind</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <a class="nav-item nav-link" href="/reminders">Reminders</a>
+            <a class="nav-item nav-link" href="/notes">Notes</a>
+          </div>
+        </div>
+        <a href="/logout" class="btn btn-secondary" id="btn-save">Save</a>
+        <a href="/logout" class="btn btn-secondary" id="btn-logout">Logout</a>
+      </nav>  
+    </div>
     <div id="root"></div>
     <script type="module" src="./main.tsx"></script>
   </body>
