@@ -5,6 +5,7 @@ const path = require("path")
 const ejsLayouts = require("express-ejs-layouts")
 const reminderController = require("./controller/reminder_controller")
 const authController = require("./controller/auth_controller")
+const noteController = require("./controller/note_controller")
 const session = require("express-session")
 const passport = require("./middleware/passport")
 const { database } = require('./models/userModel.js') 
@@ -152,23 +153,23 @@ app.get('/reminders/:date', async (req, res) => {
   res.json(reminders);
 });
 
-
+app.get("/notes", noteController.list)
 
 // ROUTES FOR THE NOTE TAKING STUFF
-app.get('/notes', (req, res) => {
-  const userId = req.session.id;
-  res.redirect(`http://localhost:5173?userId=${userId}`);
-});
+// app.get('/notes', (req, res) => {
+//   const userId = req.session.id;
+//   res.redirect(`http://localhost:5173?userId=${userId}`);
+// });
 
 
 
 // Note routes
 
 
-app.listen(3090, function () {
+app.listen(3080, function () {
   console.log(passport.session())
   console.log(
-    "Server running. Visit: http://localhost:3090/reminders in your browser 🚀"
+    "Server running. Visit: http://localhost:3080/reminders in your browser 🚀"
   )
 })
 
