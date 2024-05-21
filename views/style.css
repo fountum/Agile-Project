@@ -1,0 +1,454 @@
+      :root {
+        --today: #9a9898;
+        --hover-color: #9796f070; 
+        --selected: #9796f0;
+        --upcoming-reminder: #f0969670;
+
+        /* from bootstrap style sheet above*/
+        
+      }
+      /* general layout */
+      
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+      body { /* login */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #ffffff; 
+      }
+      
+      .custom-container {
+        max-width: 400px; 
+        width: 100%; 
+        padding: 20px; 
+        background-color: rgb(255, 254, 252) }
+
+        h3.text-center {
+          padding: 40px;
+          
+        }
+        
+        .register-link {
+          color: #6c757d; /
+          
+        }
+        .register-link:hover {
+          color: #495057; 
+        }
+        .btn-secondary {margin-bottom: 50px; 
+        }
+
+
+        /* nav bar */
+        .navbar{
+          max-height: 4rem;
+        }
+      
+        /* log out button */
+        #btn-logout{
+          position: relative;
+          top:1.6em;
+        }
+      
+        
+
+      .split {
+        display:flex;
+      }
+
+      .box{ 
+        overflow: scroll;
+        max-height: 70vh;
+        margin: 0px 25px 50px 0px;
+      }
+
+      #list-group {
+        margin: 22px 0px 25px 0px;
+        width: 700px;
+      }
+      
+      body{
+        overflow: hidden;
+        display:block;
+        height: 100vh;
+      }
+
+      /* reminders */
+      .list-group-item {
+        display:flex;
+        flex-direction: column;
+      }
+
+
+      /*reminder list menu*/
+      #reminder-list-menu{
+        display: flex;
+        justify-content: flex-end;
+      }
+      /* create reminder button */
+
+      #create-reminder{
+        margin: 25px 0px 0px  0px;
+      }
+
+      /* reminder dropdown menu */
+      .list-group-item>div{
+        display:flex;
+        flex-direction: row;
+        height:28px;
+      }
+
+      .reminder-button {
+        width: 25px;
+        text-align: center;
+        justify-content: flex-end;
+        margin-left: auto;
+        background-color: white;
+        border:none;
+      }
+
+      .reminder-button:after { 
+        content: '\2807';
+        font-size: 20px;
+      }
+
+      .reminder-menu {
+        display:none;
+        position:absolute;
+        top: 12px;
+        right:42px;
+       
+        background-color: transparent;
+        animation: to-top 0.6s forwards;
+      }
+      
+      .reminder-button:hover + .reminder-menu,
+      .reminder-menu:hover {
+        display:flex;
+        flex-direction: column;
+      }
+
+      /* reminder menu buttons */
+
+      .reminder-menu a,
+      div form .btn-danger {
+        background-color: #e9e9e9;
+        color:black;
+        text-align: center;
+        padding: 3px 16px;
+        margin: 0px;
+        transition: background-color .2s ease-in-out;
+        text-decoration: none;
+        box-shadow: none;
+        border: none;
+      }
+
+      .reminder-menu a:hover,
+      .btn-danger:hover{
+        background-color: var(--hover-color);
+        color:black;
+        transition: background-color .2s ease-in-out; 
+      }
+
+      /* reminder title */
+
+      /* I don't know if it's clear to users that the titles are clickable*/
+      .list-group-item>div>a,
+      .list-group-item>div>a:visited{
+        color: black;
+        padding: 0px 0px 5px 0px;
+        transition: padding .2s ease-in-out;
+      }
+
+      .list-group-item>div>a:hover{
+        text-decoration: none;
+        background-color: var(--hover-color);
+        border-radius: 5%;
+        padding: 0px 5px;
+        transition: padding .2s ease-in-out;
+      }
+
+
+
+      /* calendar */
+      
+      pre { /*overrides bootstrap*/ 
+        color:white;
+        margin-bottom: 0;
+      }
+
+      .calendar {
+        height: 495px;
+        width: max-content;
+        background-color: white;
+        overflow: hidden;
+        padding: 35px 50px 0px 50px;
+        margin: 50px 0px 0px 0px; 
+      }
+
+      .calendar-header {
+        background: #8089FE;
+        display: flex;
+        justify-content: space-between;
+        border-radius: 7px;
+        align-items: center;
+        font-weight: 700;
+        color: #ffffff;
+        padding: 10px;
+        height:54px;
+      }
+
+      .calendar-body {
+        padding: 10px;
+      }
+
+      .calendar-week-days {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        font-weight: 600;
+        cursor: pointer;
+        color: rgb(104, 104, 104);
+      }
+
+      .calendar-week-days div:hover {
+        color: black;
+        transform: scale(1.2);
+      }
+
+      .calendar-week-days div {
+        display: grid;
+        place-items: center;
+        color: #6D67CF;
+        height: 50px;
+      }
+
+      .calendar-days {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        grid-template-rows: repeat(6, 1fr);
+        gap: 2px;
+        color: #0A0921;
+        animation: to-top 1s forwards;
+      }
+
+      .calendar-days div {
+        width: 37px;
+        height: 33px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 5px;
+        position: relative;
+        cursor: pointer;
+      }
+
+      .month-picker {
+        padding: 0px 10px;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+
+      .month-picker:hover{
+        transform: scale(1.12);
+        transition: all 0.2s ease-in-out;
+        background-color: var(--selected);
+        border-radius: 15%;
+      }
+
+      .year-picker {
+        display: flex;
+        align-items: center;
+      }
+
+      .year-change {
+        height: 30px;
+        width: 30px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        margin: 0px 10px;
+        cursor: pointer;
+      }
+
+      .year-change:hover {
+        background-color: var(--selected);
+        transition: all .2s ease-in-out;
+        transform: scale(1.12);
+      }
+
+      .calendar-footer {
+        padding:1.25px;
+        margin-bottom: 10px;
+        margin-top:15px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        background-color: var(--today);
+      }
+
+      #year {
+        padding-right: 6px;
+        padding-left: 6px;
+      }
+
+      .calendar-days div span {
+        position: absolute;
+      }
+
+      .calendar-days div:hover {
+        transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
+        background-color: var(--hover-color);
+        border-radius: 20%;
+        color: black;
+      }
+
+      .calendar-days div.current-date {
+        color: #f8fbff;
+        background-color: var(--today);
+        border-radius: 20%;
+      }
+
+      .month-list {
+        position: relative;
+        left: 0;
+        bottom: 315px;
+        background-color: #ebebeb;
+        color: #151426;
+        display: grid;
+        grid-template-columns: repeat(3, auto);
+        gap: 5px;
+        border-radius: 20px;
+      }
+
+      .month-list>div {
+        display: grid;
+        place-content: center;
+        margin: 5px 10px;
+        transition: all 0.2s ease-in-out;
+      }
+
+      .month-list>div>div {
+        border-radius: 15px;
+        padding: 10px;
+        cursor: pointer;
+      }
+
+      .month-list>div>div:hover {
+        background-color: var(--today);
+        color: #f8fbff;
+        transform: scale(0.9);
+        transition: all 0.2s ease-in-out;
+      }
+
+
+      .month-list.show {
+        visibility: visible;
+        pointer-events: visible;
+        transition: 0.6s ease-in-out;
+        animation: to-left .71s forwards;
+      }
+
+      .month-list.hideonce {
+        visibility: hidden;
+      }
+
+      .month-list.hide {
+        animation: to-right 1s forwards;
+        visibility: none;
+        pointer-events: none;
+      }
+
+      .date-time-formate {
+        height: 4rem;
+        width: 100%;
+        font-family: Dubai Light, Century Gothic;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .day-text-formate {
+        font-family: Microsoft JhengHei UI;
+        font-size: 1.4rem;
+        padding-right: 5%;
+        border-right: 3px solid var(--today);
+      }
+
+      .date-time-value {
+        display: block;
+        position: relative;
+        text-align: center;
+        padding-left: 5%;
+      }
+
+      .time-formate {
+        font-size: 1.5rem;
+      }
+
+      @keyframes to-top {
+        0% {
+          transform: translateY(-10%);
+          opacity: 0;
+        }
+
+        100% {
+          transform: translateY(0%);
+          opacity: 1;
+        }
+      }
+
+      @keyframes to-left {
+        0% {
+          transform: translatex(230%);
+          opacity: 1;
+        }
+
+        100% {
+          transform: translatex(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes to-right {
+        10% {
+          transform: translatex(0);
+          opacity: 1;
+        }
+
+        100% {
+          transform: translatex(-150%);
+          opacity: 1;
+        }
+      }
+
+      @keyframes showtime {
+        0% {
+          transform: translatex(250%);
+          opacity: 1;
+        }
+
+        100% {
+          transform: translatex(0%);
+          opacity: 1;
+        }
+      }
+
+      @keyframes hidetime {
+        0% {
+          transform: translatex(0%);
+          opacity: 1;
+        }
+
+        100% {
+          transform: translatex(-370%);
+          opacity: 1;
+
+        }
+      
+      }

@@ -5,19 +5,17 @@ const path = require("path")
 const ejsLayouts = require("express-ejs-layouts")
 const reminderController = require("./controller/reminder_controller")
 const authController = require("./controller/auth_controller")
-
 const session = require("express-session")
 const passport = require("./middleware/passport")
 const { database } = require('./models/userModel.js') 
 
-const noteController = require("./controller/note_controller")
-const session = require("express-session")
-const passport = require("./middleware/passport")
-const methodOverride = require('method-override')
-// const { database } = require('./models/userModel.js') 
 
+const methodOverride = require('method-override')
 const { ensureAuthenticated } = require('./middleware/checkAuth.js')
-// PLESLKDJF:LSDKJF:SLDJF:SDLKFJ:LSDKFJ:LSDKKJF:LSDFJ:LSDJF:LKSKFJ:KLSDJ
+
+
+
+
 const { PrismaClient } = require('@prisma/client')
 
 const prisma = new PrismaClient()
@@ -39,7 +37,6 @@ app.use(
     cookie: {
       httpOnly: true,
       secure: false,
-      maxAge: 24 * 60 * 60 * 1000,
     },
   })
 )
@@ -56,6 +53,8 @@ app.use(passport.session())
 app.use(ejsLayouts)
 app.use(passport.initialize())
 app.use(passport.session())
+app.use(methodOverride('_method'))
+
 
 
 app.use(methodOverride('_method'))
@@ -143,27 +142,33 @@ app.get("/register", authController.register)
 app.post("/register", authController.registerSubmit)
 app.get("/login", authController.login)
 app.post("/login", authController.loginSubmit)
+app.get('/reminders/:date', async (req, res) => {
+  const date = req.params.date;
+  const reminders = await prisma.reminder.findMany({
+    where: {
+      dateDue: new Date(date),
+    },
+  });
+  res.json(reminders);
+});
+
+
+
+// ROUTES FOR THE NOTE TAKING STUFF
+app.get('/notes', (req, res) => {
+  const userId = req.session.id;
+  res.redirect(`http://localhost:5173?userId=${userId}`);
+});
+
+
 
 // Note routes
-app.get("/", noteController.list) 
-app.get("/notes", noteController.list)
-app.get("/admin", noteController.admin)
-app.get("/destroy/:sessionId", noteController.destroy)
-app.get("/note/new", noteController.new)
-app.get("/note/:id", noteController.listOne)
-app.get("/note/:id/edit", noteController.edit)
-app.post("/note/", ensureAuthenticatedForCreate, noteController.create)
-app.put("/note/update/:id", noteController.update)
-app.delete("/note/delete/:id", noteController.delete)
-
-app.get("/logout", noteController.logout)
-app.post("/logout", noteController.logout)
 
 
 app.listen(3090, function () {
   console.log(passport.session())
   console.log(
-    "Server running. Visit: http://localhost:3090/login in your browser 🚀"
+    "Server running. Visit: http://localhost:3090/reminders in your browser 🚀"
   )
 })
 
