@@ -50,6 +50,38 @@
         <a class="btn btn-secondary" id="create-reminder" href="/reminder/new">Create</a>
       </div>
       <ul class="box" id="list-group">
+  <% if (reminders && reminders.length > 0) { %>
+    <% reminders.forEach(function (reminderItem) { %>
+      <li class="list-group-item">
+        <div><a href=<%= "/reminder/" + reminderItem.id %>><strong><%= reminderItem.title %></strong></a>
+          <div class="reminder-button"></div>
+          <div class="reminder-menu"> 
+            <a href=<%= "/reminder/" + reminderItem.id + "/edit" %>>Edit</a>
+            <form class="deleteForm "method="POST" action=<%= "/reminder/delete/" + reminderItem.id %>>
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+          </div>
+        </div>
+        <% if (reminderItem.dateDue) { %>
+          <% 
+          // let dueDate = new Date(reminderItem.dateDue + 'Z');
+          // let formattedDate = (dueDate.getUTCMonth() + 1).toString().padStart(2, '0') + '-' + dueDate.getUTCDate().toString().padStart(2, '0') + '-' + dueDate.getUTCFullYear().toString().substring(2);
+          let dueDate = new Date(reminderItem.dateDue);
+    let formattedDate = (dueDate.getUTCMonth() + 1).toString().padStart(2, '0') + '-' + dueDate.getUTCDate().toString().padStart(2, '0') + '-' + dueDate.getUTCFullYear().toString().substring(2);
+%>
+  <p><%= formattedDate %></p>
+        <% } %>
+
+        <%= reminderItem.description %>
+      </li>
+    <% }) %>
+  <% } else { %>
+    <li class="list-group-item">No reminders</li>
+  <% } %>
+</ul>
+    </div>
+  </div>
+</div>
         
         <% reminders.forEach(function (reminderItem) { %>
           <li class="list-group-item">
