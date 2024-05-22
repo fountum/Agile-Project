@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flashcards</title>
+</head>
+<body>
+    <h1>Flashcards</h1>
+    <a href="/flashcards/new">Create New Flashcard</a>
+    <ul>
+        <% flashcards.forEach(flashcard => { %>
+            <li>
+                <a href="/flashcards/<%= flashcard.id %>"><%= flashcard.question %></a>
+                <a href="/flashcards/<%= flashcard.id %>/edit">Edit</a>
+                <form action="/flashcards/<%= flashcard.id %>?_method=DELETE" method="POST" style="display:inline;">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        <% }); %>
+    </ul>
+</body>
+</html>
