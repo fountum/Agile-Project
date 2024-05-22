@@ -154,6 +154,7 @@ app.get('/reminders/:date', async (req, res) => {
 });
 
 app.get("/notes", noteController.list)
+app.get("/note-book", noteController.notebook)
 
 // ROUTES FOR THE NOTE TAKING STUFF
 // app.get('/notes', (req, res) => {
@@ -161,6 +162,7 @@ app.get("/notes", noteController.list)
 //   res.redirect(`http://localhost:5173?userId=${userId}`);
 // });
 
+app.post('/save', noteController.save);
 
 
 // Note routes

@@ -16,61 +16,27 @@
       .notebook-holder {
         display: flex;
         flex-wrap: wrap;
-        justify-content: flex-start;
-        
+        justify-content: space-between;
       }
-
+      
       .notebook {
+        border: black 2px solid;
         flex: 0 0 calc(33.33% - 10px); /* 33.33% for 3 items per row, 10px for margin */
         height: 500px;
         margin: 5px; /* Adjust as needed */
-        border: black 2px solid;
-        border-radius: 30px;
         opacity: 0;
-          transition: opacity 0.5s ease-in-out;
+        transition: opacity 0.5s ease-in-out;
         }
 
         .notebook.show {
-          opacity: 1;
+        opacity: 1;
         }
-
       .newbook{
         border: black 2px solid;
         flex: 0 0 calc(33.33% - 10px); /* 33.33% for 3 items per row, 10px for margin */
         height: 500px;
-        margin: 5px;
-        border-radius: 30px;
-        background-color: rgba(143, 143, 143, 0.212);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
+        margin: 5px; 
       }
-
-      .add-icon {
-        position: absolute;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background-color: #000;
-        color: #fff;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 2em;
-      }
-
-      .newbook, .notebook {
-  /* Other styles... */
-        transition: transform 0.3s ease-in-out;
-      }
-
-      .newbook:hover, .notebook:hover {
-        transform: translateY(-10px);
-      }
-
-
-      
     </style>
     <title>Basic Setup</title>
   </head>
@@ -88,49 +54,20 @@
             <a class="nav-item nav-link" href="/notes">Notes</a>
           </div>
         </div>
+        <a href="index.html" class="btn btn-secondary" id="btn-logout">Back</a>
       </nav>  
     </div>
 
 <!-- THIS IS NEW SHIT -->
-    <div class="notebook-holder">
-      <div class="newbook">
-          <div class="add-icon">+</div>
-      </div>
-    </div>
-  <!-- <div class="col-10" id="root"> -->
+   
+  <div class="col-10" id="root">
 
 
 
     <script type="module" src="./main.tsx"></script>
     <script>
 document.addEventListener('DOMContentLoaded', (event) => {
-    const newBookDiv = document.querySelector('.newbook');
-    let notebookCount = document.querySelectorAll('.notebook').length;
 
-    newBookDiv.addEventListener('click', () => {
-        const newNotebookDiv = document.createElement('div');
-        newNotebookDiv.className = 'notebook';
-
-        fetch('https://source.unsplash.com/random')
-            .then((response) => {
-                newNotebookDiv.style.backgroundImage = `url(${response.url})`;
-            });
-
-        const newRootDiv = document.createElement('div');
-        const rootId = `root${++notebookCount}`;
-        newRootDiv.id = rootId;
-        newNotebookDiv.appendChild(newRootDiv);
-
-        newBookDiv.parentNode.insertBefore(newNotebookDiv, newBookDiv);
-
-        newNotebookDiv.addEventListener('click', () => {
-            window.location.href = `notes.html?rootId=${rootId}`;
-        });
-
-        setTimeout(() => {
-        newNotebookDiv.classList.add('show');
-      }, 100); // Adjust delay as needed
-    });
 });
   </script>
   </body>
