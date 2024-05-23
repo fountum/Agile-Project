@@ -1,0 +1,127 @@
+
+
+
+
+
+<style>
+    .flashcard-container {
+      width: fit-content;
+    }
+    ul{
+      border:black solid 2px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    li, #creation {
+    /* border: solid rgb(176, 176, 176) 3px; */
+    padding: 10px 10px 10px 10px;
+    background-color: rgb(232, 232, 232);
+    margin: 30px 30px 30px 30px;
+    border-radius:5px;  
+    border: rgb(232, 232, 232) solid 2px;
+    list-style-type: none;
+    
+  }
+
+    .flashcard {
+      position: relative;
+      width: 300px; /* Set a fixed width */
+      min-height: 200px; /* Set a minimum height */
+      margin: 10px;
+      border: 1px solid #ccc;
+      overflow: auto; /* Allow the flashcard to expand vertically */
+    }
+  
+    .flashcard-question, .flashcard-answer {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      padding: 10px;
+      width: 100%;
+      cursor: pointer;
+      height:250px;
+    }
+  
+    .flashcard-question {
+      display: flex;
+    }
+    #btn-display{
+        display:flex;
+        justify-content: space-between;
+    }
+    #btn {
+    margin: 10px 10px 10px 10px;
+    display: inline-block;
+    width: 100%;
+    padding: 10px 20px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  </style>
+  
+  <h1>Flashcards</h1>
+  <div style="padding:60px;">
+    <form action="/flashcards" method="POST">
+      <div class="form-group">
+          <label for="title">Question</label>
+          <input type="text" class="form-control" id="titleInput" placeholder="Title" name="question">
+        </div>
+        <div class="form-group">
+            <label for="description">Answer</label>
+            <textarea class="form-control" id="descriptionInput" rows="3" placeholder="Description" name="answer"></textarea>
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+    </div>
+    
+
+  <ul > 
+    <% flashcards.forEach(flashcard => { %>
+      <li  style="width:fit-content;">
+        <div class="flashcard-container">
+          <div class="flashcard">
+            <div class="flashcard-question">
+              <h4><%= flashcard.question %></h4>
+            </div>
+            <div class="flashcard-answer">
+              <h4><%= flashcard.answer %></h4>
+            </div>
+          </div>
+        </div>
+        <div id="btn-display"> 
+            <button id="btn" style="background-color:blue;">Edit</button>
+            <button id="btn" style="background-color:red;">Delete</button>
+        <div> 
+
+      </li>
+    <% }); %>
+    <div id="new-flashcard" class="flashcard-container">
+        
+    </div>
+  </ul>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.flashcard-container').forEach(container => {
+        container.addEventListener('click', () => {
+          const question = container.querySelector('.flashcard-question');
+          const answer = container.querySelector('.flashcard-answer');
+          if (question.style.display !== 'none') {
+            question.style.display = 'none';
+            answer.style.display = 'flex';
+          } else {
+            question.style.display = 'flex';
+            answer.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>

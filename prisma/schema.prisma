@@ -14,25 +14,21 @@ model User {
   password String
   role     String
 }
-
-model flashcard {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-}
-
-model note {
+model reminder {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  content     String
+  completed   Boolean
   dateCreated DateTime @db.Date
+  dateDue     DateTime?
+  description String
   title       String
   userId      String   @db.ObjectId
 }
 
-model reminder {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  completed   Boolean
-  dateCreated DateTime  @db.Date
-  dateDue     DateTime? @db.Date
-  description String
-  title       String
-  userId      String    @db.ObjectId
+model flashcard{
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  question    String
+  answer      String
+  userId      String   @db.ObjectId
 }
+
+

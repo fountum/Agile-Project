@@ -5,11 +5,11 @@ const path = require("path")
 const ejsLayouts = require("express-ejs-layouts")
 const reminderController = require("./controller/reminder_controller")
 const authController = require("./controller/auth_controller")
-const noteController = require("./controller/note_controller")
+// const noteController = require("./controller/note_controller")
 const session = require("express-session")
 const passport = require("./middleware/passport")
-const { database } = require('./models/userModel.js') 
-
+// const { database } = require('./models/userModel.js') 
+const flashcardController = require("./controller/flashcard_controller")
 
 const cors = require('cors');
 
@@ -21,6 +21,7 @@ const { ensureAuthenticated } = require('./middleware/checkAuth.js')
 
 
 const { PrismaClient } = require('@prisma/client')
+const flashcardsController = require("./controller/flashcard_controller")
 
 const prisma = new PrismaClient()
 
@@ -118,29 +119,11 @@ app.get('/reminders/:date', async (req, res) => {
 });
 
 //Deals with the CRUD method of POST
-app.post("/reminder/", ensureAuthenticatedForCreate,reminderController.create)
-app.post("/reminder/update/:id", reminderController.update)
-app.post("/reminder/delete/:id", reminderController.delete)
-app.post("/destroy/:sessionId", reminderController.destroy)
-app.post("/logout", reminderController.logout)
-app.post("/register", authController.registerSubmit)
-app.post("/login", authController.loginSubmit)
+
 //Provides a GET Method. This grabs the URL and loads the page.
 //An action that is done by a button also requires this along with their path.
-app.get("/", reminderController.list) 
-app.get("/reminders", reminderController.list)
-app.get("/admin", reminderController.admin)
-app.get("/destroy/:sessionId", reminderController.destroy) // This is a buttoned action, it needs a get and a post
-app.get("/reminder/new", reminderController.new)
-app.get("/reminder/:id", reminderController.listOne)
-app.get("/reminder/:id/edit", reminderController.edit)
 
 
-
-app.post("/reminder/", ensureAuthenticatedForCreate,reminderController.create)
-app.post("/reminder/update/:id", reminderController.update)
-app.post("/reminder/delete/:id", reminderController.delete)
-app.post("/destroy/:sessionId", reminderController.destroy)
 
 app.get("/logout", reminderController.logout)
 app.post("/logout", reminderController.logout)
@@ -158,14 +141,24 @@ app.get('/reminders/:date', async (req, res) => {
   res.json(reminders);
 });
 
-app.get("/notes", noteController.list)
+// app.get("/notes", noteController.list)
 
-app.get("/notes/new", noteController.new)
-app.get("/notes/edit/:id", noteController.edit)
-app.post("/notes/update/:id", noteController.update)
-app.post("/notes/delete/:id", noteController.delete)
+// app.get("/notes/new", noteController.new)
+// app.get("/notes/edit/:id", noteController.edit)
+// app.post("/notes/update/:id", noteController.update)
+// app.post("/notes/delete/:id", noteController.delete)
+// // Note routes
+// app.get("/notes", noteController.list)
+// app.post("/notes/",noteController.create)
 
-app.post("/notes/",noteController.create)
+
+app.get('/flashcards', flashcardController.list);
+app.get('/flashcards/new', flashcardController.new);
+app.post('/flashcards', flashcardController.create);
+app.get('/flashcards/edit/:id', flashcardController.edit);
+// app.post('/flashcards/update/:id', flashcardController.update);
+app.post('/flashcards/delete/:id', flashcardController.delete);
+app.post("/flashcards/update/:id", flashcardsController.update)
 // app.post("/notes", noteController.list)
 
 // ROUTES FOR THE NOTE TAKING STUFF
