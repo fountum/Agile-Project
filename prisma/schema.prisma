@@ -15,14 +15,8 @@ model User {
   role     String
 }
 
-model reminder {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  completed   Boolean
-  dateCreated DateTime @db.Date
-  dateDue     DateTime?
-  description String
-  title       String
-  userId      String   @db.ObjectId
+model flashcard {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
 }
 
 model note {
@@ -31,4 +25,14 @@ model note {
   dateCreated DateTime @db.Date
   title       String
   userId      String   @db.ObjectId
+}
+
+model reminder {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  completed   Boolean
+  dateCreated DateTime  @db.Date
+  dateDue     DateTime? @db.Date
+  description String
+  title       String
+  userId      String    @db.ObjectId
 }
