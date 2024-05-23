@@ -1,13 +1,91 @@
 <%- include ("../partials/navbar.ejs") %>
+<style>
+  body{
+    ul{
+      border:black solid 2px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+  }
 
-<% if (notes && notes.length > 0) { %>
-  <% notes.forEach(function (noteItem) { %>
-    <li class="notebook-holder">
-      <div class="notebook">
-        <form action="/note-book" method="GET">
-          <button type="submit"><%= noteItem.id %></button>
-        </form>
+  li, #creation {
+    /* border: solid rgb(176, 176, 176) 3px; */
+    padding: 10px 10px 10px 10px;
+    background-color: rgb(232, 232, 232);
+    margin: 30px 30px 30px 30px;
+    border-radius:5px;  
+    border: rgb(232, 232, 232) solid 2px;
+    list-style-type: none;
+    
+  }
+
+
+  #title{
+    text-align: center;
+    background-color: white;
+    border-radius:2px;
+    border: solid white 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+
+  #content {
+    background-color: white;
+    margin: 10px 0px 10px 0px;
+    height: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+
+  #btn {
+    margin: 20px 10px 10px 10px;
+    display: inline-block;
+    width: 100%;
+    padding: 10px 20px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+
+</style>
+<ul>
+  <% notes.forEach(function(note) { %>
+    <li>
+      <div id="title">
+        <h4><strong><%= note.title %></strong></h4>
+      </div>
+      <div style="display:flex">
+        <a id="btn" style="background-color: blue;" href="/notes/edit/<%= note.id %>">Open</a>
+        <a id="btn" style="background-color: red;" href="#" onclick="deleteNote('<%= note.id %>')">Delete</a>
       </div>
     </li>
-  <% }) %>
-<% } %>
+  <% }); %>
+
+  <a style="width: 100%;
+            background-color:white; 
+            padding:30px;border:solid; 
+            border: rgb(232, 232, 232) solid 15px;" 
+            id="creation" href="/notes/new">Create Notebook</a>
+</ul>
+
+
+<script>
+  console.log("Everything is loaded")
+  function deleteNote(id) {
+    console.log("Delete Button Works")
+    fetch('/notes/delete/' + id, {
+      method: 'POST',
+    }).then(() => {
+      location.reload();
+    });
+  }
+</script>

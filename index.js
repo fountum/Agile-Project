@@ -11,6 +11,9 @@ const passport = require("./middleware/passport")
 const { database } = require('./models/userModel.js') 
 
 
+const cors = require('cors');
+
+
 const methodOverride = require('method-override')
 const { ensureAuthenticated } = require('./middleware/checkAuth.js')
 
@@ -39,7 +42,8 @@ app.use(
       httpOnly: true,
       secure: false,
     },
-  })
+  }),
+  cors()
 )
 
 
@@ -130,10 +134,11 @@ app.get("/destroy/:sessionId", reminderController.destroy) // This is a buttoned
 app.get("/reminder/new", reminderController.new)
 app.get("/reminder/:id", reminderController.listOne)
 app.get("/reminder/:id/edit", reminderController.edit)
+
+
+
 app.post("/reminder/", ensureAuthenticatedForCreate,reminderController.create)
-// ⭐ Implement these two routes below!
 app.post("/reminder/update/:id", reminderController.update)
-// AFter a delete has happened, it'll post it, and the redirects
 app.post("/reminder/delete/:id", reminderController.delete)
 app.post("/destroy/:sessionId", reminderController.destroy)
 
@@ -154,18 +159,24 @@ app.get('/reminders/:date', async (req, res) => {
 });
 
 app.get("/notes", noteController.list)
-app.get("/note-book", noteController.notebook)
+
+app.get("/notes/new", noteController.new)
+app.get("/notes/edit/:id", noteController.edit)
+app.post("/notes/update/:id", noteController.update)
+app.post("/notes/delete/:id", noteController.delete)
+
+app.post("/notes/",noteController.create)
+// app.post("/notes", noteController.list)
 
 // ROUTES FOR THE NOTE TAKING STUFF
-// app.get('/notes', (req, res) => {
+// app.get('/notes', (req, res) => {  
 //   const userId = req.session.id;
 //   res.redirect(`http://localhost:5173?userId=${userId}`);
 // });
 
-app.post('/save', noteController.save);
 
 
-// Note routes
+
 
 
 app.listen(3080, function () {
