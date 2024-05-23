@@ -13,8 +13,9 @@ const methodOverride = require('method-override')
 const { ensureAuthenticated } = require('./middleware/checkAuth.js')
 
 const { PrismaClient } = require('@prisma/client')
-
 const prisma = new PrismaClient()
+
+const flashcardRoutes = require('./routes/flashcards.js')
 
 // Deals with the sessions
 app.set("view engine", "ejs")
@@ -88,6 +89,8 @@ app.get("/notes", noteController.list)
 
 // app.get("/logout", noteController.logout)
 // app.post("/logout", noteController.logout)
+
+app.use('/', flashcardRoutes)
 
 app.listen(3090, function () {
   console.log(passport.session())
