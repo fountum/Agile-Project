@@ -3,101 +3,126 @@ const prisma = new PrismaClient()
 
 let flashcardsController = {
   list: async (req, res) => {
-    let flashcards = await prisma.flashcard.findMany({
-      where: {
-        userId: req.user.id,
-      },
-    })
-    if (req.user && req.user.role === "admin") {
-      res.redirect('/admin')
-    } else if (req.user && req.user.role === "regular") {
-      res.render("flashcard/flashcards", { flashcards: flashcards })
-    } else {
-      res.redirect("/login")
-    }
-  },
-
-  new: (req, res) => {
-    res.render("flashcard/create")
-  },
-
-  listOne: async (req, res) => {
-    let flashcardToFind = req.params.id
-    let searchResult = await prisma.flashcard.findUnique({
-      where: {
-        id: flashcardToFind,
-      },
-    })
-    if (searchResult != null) {
-      res.render("flashcard/single-flashcard", { flashcardItem: searchResult })
-    } else {
+    try{
       let flashcards = await prisma.flashcard.findMany({
         where: {
           userId: req.user.id,
         },
       })
-      res.render("flashcard/index", { flashcards: flashcards })
+      if (req.user && req.user.role === "admin") {
+        res.redirect('/admin')
+      } else if (req.user && req.user.role === "regular") {
+        res.render("flashcard/flashcards", { flashcards: flashcards })
+      } else {
+        res.redirect("/login")
+      }
+  
+    } catch (error) {
+    console.error("Error fetching flashcards:", error);
+    res.status(500).send("Server Error");
+  }
+},
+  new: (req, res) => {
+    res.render("flashcard/create")
+  },
+
+  listOne: async (req, res) => {
+    try{
+      let flashcardToFind = req.params.id
+      let searchResult = await prisma.flashcard.findUnique({
+        where: {
+          id: flashcardToFind,}
+      });
+      if (searchResult != null) {
+        res.render("flashcard/single-flashcard", { flashcardItem: searchResult })
+      } else {
+        let flashcards = await prisma.flashcard.findMany({
+          where: {
+            userId: req.user.id,
+          },
+        });
+        res.render("flashcard/index", { flashcards: flashcards })
+      }
+    }catch (error) {
+      console.error("Error fetching flashcard:", error);
+      res.status(500).send("Server Error");
     }
   },
 
   create: async (req, res) => {
-    const newFlashcard = await prisma.flashcard.create({
-      data: {
-        question: req.body.question,
-        answer: req.body.answer,
-        dateCreated: new Date(),
-        userId: req.user.id, 
-      },
-    });
+    try{
+      const newFlashcard = await prisma.flashcard.create({
+        data: {
+          question: req.body.question,
+          answer: req.body.answer,
+          dateCreated: new Date(),
+          userId: req.user.id, 
+        },
+      });
 
-    res.json(newFlashcard);
+      res.json(newFlashcard);
+    }catch (error) {
+      console.error("Error creating flashcard:", error);
+      res.status(500).send("Server Error");
+    }
   },
 
   edit: async (req, res) => {
-    let flashcardToFind = req.params.id
-    let searchResult = await prisma.flashcard.findUnique({
-      where: {
-        id: flashcardToFind,
-      },
-    })
-    res.render("flashcard/edit", { flashcardItem: searchResult })
+    try {
+      let flashcardToFind = req.params.id;
+      let searchResult = await prisma.flashcard.findUnique({
+        where: { id: flashcardToFind },
+      });
+
+      if (searchResult) {
+        res.render("flashcard/edit", { flashcardItem: searchResult });
+      } else {
+        res.status(404).send("Flashcard not found");
+      }
+    } catch (error) {
+      console.error("Error fetching flashcard:", error);
+      res.status(500).send("Server Error");
+    }
   },
+
 
   update: async (req, res) => {
     try {
-      let flashcardToFind = req.params.id
+      let flashcardToFind = req.params.id;
       let flashcard = await prisma.flashcard.findUnique({
-        where: {
-          id: flashcardToFind,
-        },
-      })
+        where: { id: flashcardToFind },
+      });
+
       if (!flashcard) {
-        return res.status(404).send("Flashcard not found")
+        return res.status(404).send("Flashcard not found");
       }
+
       let updatedFlashcard = await prisma.flashcard.update({
-        where: {
-          id: flashcardToFind,
-        },
+        where: { id: flashcardToFind },
         data: {
           question: req.body.question,
           answer: req.body.answer,
         },
-      })
-      res.redirect("/flashcards")
+      });
+
+      res.redirect("/flashcards");
     } catch (error) {
-      console.error("Error updating flashcard:", error)
-      res.status(500).send("Server Error")
+      console.error("Error updating flashcard:", error);
+      res.status(500).send("Server Error");
     }
   },
 
   delete: async (req, res) => {
-    let flashcardToFind = req.params.id
-    await prisma.flashcard.delete({
-      where: {
-        id: flashcardToFind,
-      },
-    })
-    res.redirect("/flashcards")
+    try {
+      let flashcardToFind = req.params.id;
+      await prisma.flashcard.delete({
+        where: { id: flashcardToFind },
+      });
+      res.redirect("/flashcards");
+    } catch (error) {
+      console.error("Error deleting flashcard:", error);
+      res.status(500).send("Server Error");
+    }
   },
 
   admin: (req, res) => {
