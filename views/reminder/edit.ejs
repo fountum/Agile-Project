@@ -1,7 +1,9 @@
 <%- include ("../partials/navbar.ejs") %>
 
+
+
 <div class="container">
-  <h1 class="page-header">Edit</h1>
+  <h1 class="page-header">Edit My Reminder</h1>   
   <!-- 
     The actions are linked to the function that will happen to them.
     The method is set to POST because we are sending data to the server.
@@ -10,11 +12,11 @@
   -->
   <form action=<%= "/reminder/update/" + reminderItem.id %> method="POST">
     <div class="form-group">
-      <label for="title">Title</label>
+      <label for="title"></label>
       <input type="text" name="title" class="form-control" id="titleInput" value="<%= reminderItem.title %>">
     </div>
     <div class="form-group">
-      <label for="description">Description</label>
+      <label for="description"></label>
       <textarea class="form-control" id="descriptionInput" rows="3" placeholder="Description" name="description"><%= reminderItem.description %></textarea>
     </div>
 
@@ -41,6 +43,11 @@
         </label>
       </div>
     </div>
-    <button type="submit" class="btn btn-default">Submit</button>
+    <button type="submit" class="btn btn-secondary">Update Reminder</button>
+    
   </form>
-</div>
+</div> 
+  
+
+
+  

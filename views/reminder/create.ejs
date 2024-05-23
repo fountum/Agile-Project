@@ -1,19 +1,25 @@
-<%- include ("../partials/navbar.ejs") %>
 
-<div class="container">
-  <form action="/reminder" method="POST">
+
+ <%- include ("../partials/navbar.ejs") %>
+
+<div class="container mt-4">
+  <h2 class="mb-4">New Reminder</h2>
+  <form action="/reminder" method="POST" class="reminder-form">
     <div class="form-group">
-      <label for="title">Title</label>
-      <input type="text" class="form-control" id="titleInput" placeholder="Title" name="title">
+      <label for="titleInput"></label>
+      <input type="text" class="form-control" id="titleInput" placeholder="Enter title" name="title" required>
     </div>
     <div class="form-group">
-      <label for="description">Description</label>
-      <textarea class="form-control" id="descriptionInput" rows="3" placeholder="Description" name="description"></textarea>
+      <label for="descriptionInput"></label>
+      <textarea class="form-control" id="descriptionInput" rows="3" placeholder="Enter description" name="description" required></textarea>
     </div>
     <div class="form-group">
-      <label for="dateDue">Due Date</label>
-      <input type="date" class="form-control" id="dateDueInput" name="dateDue">
+      <label for="dateDueInput"></label>
+      <input type="date" class="form-control" id="dateDueInput" name="dateDue" required>
     </div>
-    <button type="submit" class="btn btn-default">Submit</button>
+    <button type="submit" class="btn btn-secondary">Add</button>
   </form>
 </div>
+
+
+
