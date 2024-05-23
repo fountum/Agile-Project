@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <%- include ("../partials/navbar.ejs") %>
 <style>
   body{
@@ -89,3 +90,36 @@
     });
   }
 </script>
+=======
+<div class="d-flex">
+    <!-- Sidebar -->
+    <div class="offcanvas offcanvas-start bg-dark text-white" tabindex="-1" id="sidebar">
+      <div class="offcanvas-header">
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+      </div>
+      <div class="offcanvas-body">
+        <!-- List of notes -->
+        <div id="notesList">
+          <% notes.forEach(function(note) { %>
+            <!-- Clicking a note should display that note -->
+            <a href="#" onclick="loadNote('<%= note.id %>')"><%= note.title %></a>
+        </div>
+        <button class="btn btn-primary" id="createNoteBtn">Create Note</button>
+      </div>
+    </div>
+  
+    <!-- Hamburger button -->
+    <button class="btn btn-dark d-inline-block d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <!-- Note writing section -->
+    <div class="col offset-3" id="main">
+      <!-- editorjs attached here  -->
+      <div id="editorjs"></div>
+    </div>
+  </div>
+  
+  <!-- Should be in public directory but idk how we're serving files  -->
+  <script src="editorInit.js"></script>
+>>>>>>> EJS

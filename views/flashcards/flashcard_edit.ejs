@@ -1,0 +1,24 @@
+<%- include ("../partials/navbar.ejs") %>
+
+<div class="container">
+  <h1 class="page-header">Edit</h1>
+  <!-- 
+    The actions are linked to the function that will happen to them.
+    The method is set to POST because we are sending data to the server.
+    Once this action is triggered, it will redirect to the reminders page with
+    the updated data.   
+  -->
+  <form action=<%= "/flashcards/update/" + flashcardItem.id %> method="POST">
+    <div class="form-group">
+      <label for="title">Question</label>
+      <input type="text" name="question" class="form-control" id="titleInput" value="<%= flashcardItem.question %>">
+    </div>
+    <div class="form-group">
+      <label for="description">answer</label>
+      <textarea class="form-control" id="descriptionInput" rows="3" placeholder="Description" name="answer"><%= flashcardItem.answer %></textarea>
+    </div>
+
+    
+    <button type="submit" class="btn btn-default">Submit</button>
+  </form>
+</div>

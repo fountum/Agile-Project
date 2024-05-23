@@ -14,7 +14,6 @@ model User {
   password String
   role     String
 }
-
 model reminder {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   completed   Boolean
@@ -25,10 +24,9 @@ model reminder {
   userId      String   @db.ObjectId
 }
 
-model note {
+model flashcard{
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  content     String
-  dateCreated DateTime @db.Date
-  title       String
+  question    String
+  answer      String
   userId      String   @db.ObjectId
 }
