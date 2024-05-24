@@ -1,15 +1,11 @@
-<<<<<<< HEAD
 <%- include ("../partials/navbar.ejs") %>
 <style>
-  body{
-    ul{
-      border:black solid 2px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
-  }
-
+  body ul {
+  border:black solid 2px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  } 
   li, #creation {
     /* border: solid rgb(176, 176, 176) 3px; */
     padding: 10px 10px 10px 10px;
@@ -65,9 +61,15 @@
         <h4><strong><%= note.title %></strong></h4>
       </div>
       <div style="display:flex">
-        <a id="btn" style="background-color: blue;" href="/notes/edit/<%= note.id %>">Open</a>
+        <a id="btn" style="background-color: blue;" href="/notes/edit/<%= note.id %>/">Open</a>
         <a id="btn" style="background-color: red;" href="#" onclick="deleteNote('<%= note.id %>')">Delete</a>
       </div>
+      <form action="/notes/share/<%= note.id %>" method="POST" style="height:auto;">
+        <input type="email" id="email" name="email" placeholder="Enter email to share" required>
+        <input type="submit" value="Share" style="font-size: larger;">
+      </form>
+      
+
     </li>
   <% }); %>
 
@@ -90,36 +92,4 @@
     });
   }
 </script>
-=======
-<div class="d-flex">
-    <!-- Sidebar -->
-    <div class="offcanvas offcanvas-start bg-dark text-white" tabindex="-1" id="sidebar">
-      <div class="offcanvas-header">
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
-      </div>
-      <div class="offcanvas-body">
-        <!-- List of notes -->
-        <div id="notesList">
-          <% notes.forEach(function(note) { %>
-            <!-- Clicking a note should display that note -->
-            <a href="#" onclick="loadNote('<%= note.id %>')"><%= note.title %></a>
-        </div>
-        <button class="btn btn-primary" id="createNoteBtn">Create Note</button>
-      </div>
-    </div>
-  
-    <!-- Hamburger button -->
-    <button class="btn btn-dark d-inline-block d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  
-    <!-- Note writing section -->
-    <div class="col offset-3" id="main">
-      <!-- editorjs attached here  -->
-      <div id="editorjs"></div>
-    </div>
-  </div>
-  
-  <!-- Should be in public directory but idk how we're serving files  -->
-  <script src="editorInit.js"></script>
->>>>>>> EJS
+

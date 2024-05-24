@@ -10,8 +10,10 @@ const session = require("express-session")
 const passport = require("./middleware/passport")
 // const { database } = require('./models/userModel.js') 
 const flashcardController = require("./controller/flashcard_controller")
+const noteController = require("./controller/note_controller")
 
 const cors = require('cors');
+const bodyParser = require('body-parser');
 
 
 const methodOverride = require('method-override')
@@ -50,7 +52,10 @@ app.use(
 
 
 app.use(express.static('public'));
+app.use(bodyParser.urlencoded({ extended: false }));
 
+// parse application/json
+app.use(bodyParser.json());
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -74,6 +79,7 @@ function ensureAuthenticatedForCreate(req, res, next) {
     res.redirect('reminder/index')
   }
 }
+//Routes for Reminder
 app.get("/", reminderController.list) 
 app.get("/reminders", reminderController.list)
 app.get("/admin", reminderController.admin)
@@ -114,17 +120,11 @@ app.get('/reminders/:date', async (req, res) => {
   });
 
   console.log('reminders:', reminders);
-
+  
   res.json(reminders);
 });
 
-//Deals with the CRUD method of POST
-
-//Provides a GET Method. This grabs the URL and loads the page.
-//An action that is done by a button also requires this along with their path.
-
-
-
+//Routes for Login and Logout
 app.get("/logout", reminderController.logout)
 app.post("/logout", reminderController.logout)
 app.get("/register", authController.register)
@@ -141,32 +141,22 @@ app.get('/reminders/:date', async (req, res) => {
   res.json(reminders);
 });
 
-// app.get("/notes", noteController.list)
 
-// app.get("/notes/new", noteController.new)
-// app.get("/notes/edit/:id", noteController.edit)
-// app.post("/notes/update/:id", noteController.update)
-// app.post("/notes/delete/:id", noteController.delete)
-// // Note routes
-// app.get("/notes", noteController.list)
-// app.post("/notes/",noteController.create)
-
-
+//Routes for Notes
+app.get("/notes", noteController.list)
+app.get("/notes/new", noteController.new)
+app.get("/notes/edit/:id", noteController.edit)
+app.post("/notes/update/:id", noteController.update)
+app.post("/notes/delete/:id", noteController.delete)
+app.post("/notes/",noteController.create)
+app.post("/notes/share/:id", noteController.share);
+//Routes for FlashCards
 app.get('/flashcards', flashcardController.list);
 app.get('/flashcards/new', flashcardController.new);
 app.post('/flashcards', flashcardController.create);
 app.get('/flashcards/edit/:id', flashcardController.edit);
-// app.post('/flashcards/update/:id', flashcardController.update);
 app.post('/flashcards/delete/:id', flashcardController.delete);
 app.post("/flashcards/update/:id", flashcardsController.update)
-// app.post("/notes", noteController.list)
-
-// ROUTES FOR THE NOTE TAKING STUFF
-// app.get('/notes', (req, res) => {  
-//   const userId = req.session.id;
-//   res.redirect(`http://localhost:5173?userId=${userId}`);
-// });
-
 
 
 
