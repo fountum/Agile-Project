@@ -17,6 +17,9 @@ let remindersController = {
       },
     })
 
+    if(reminders.length === 0){
+      return res.redirect("/login")
+    }
     // Debugging purposes
     // console.log(req.user.id)
     // console.log(reminders)
@@ -32,6 +35,8 @@ let remindersController = {
       return res.redirect("/login")
     }
   },
+
+  // ... rest of your code
 
 
   new: (req, res) => {//seperate function
@@ -53,6 +58,7 @@ let remindersController = {
       let reminders = await prisma.reminder.findMany({
         where: {
           userId: req.user.id,
+          dateDue: new Date(year, month - 1, day),  // JavaScript's Date object uses 0-based months
         },
       })
       res.render("reminder/index", { reminders: reminders })
@@ -97,10 +103,6 @@ let remindersController = {
     res.render("reminder/edit", { reminderItem: searchResult })
   },
 
-
-
-
-
   update: async (req, res) => {
     try {
       let reminderToFind = req.params.id
@@ -130,10 +132,6 @@ let remindersController = {
       res.status(500).send("Server Error")
     }
   },
-
-
-
-
 
 
   delete: async (req, res) => {
