@@ -14,6 +14,12 @@ module.exports = {
       branches: 75,
       functions: 75,
       lines: 75
+    },
+    "./controller/userController.js": {
+      statements: 75,
+      branches: 75,
+      functions: 75,
+      lines: 75
     }
   }
 };

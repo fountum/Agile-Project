@@ -6,28 +6,27 @@ function isUserValid(user, password) {
   return user.password === password
 }
 
-const getUserByEmailIdAndPassword = async (email, password) => {
-  let user = await userModel.findOne(email)
+const getUserByEmailAndPassword = async (email, password) => {
+  let user = await prisma.user.findUnique({ where: { email: email, }, }); 
   if (user) {
     if (isUserValid(user, password)) {
-      // console.log(prisma)
-      return user
+      return user;
     }
   }
-  console.log("User cannot be found: getuserByEmailIDandPassword")
-  return null
-}
+  console.log("User cannot be found");
+  return null;
+};
 
 const getUserById = async (id) => {
-  let user = await userModel.findById(id)
+  let user = await prisma.user.findUnique({ where: { id: id, }, });
   if (user) {
-    return user
+    return user;
   }
-  console.log("User cannot be found: getUserById")
-  return null
-}
+  console.log("User cannot be found: getUserById");
+  return null;
+};
 
 module.exports = {
-  getUserByEmailIdAndPassword,
+  getUserByEmailAndPassword,
   getUserById,
 }

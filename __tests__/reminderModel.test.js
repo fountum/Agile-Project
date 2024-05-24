@@ -6,14 +6,14 @@ const prisma = new PrismaClient();
 describe('Tests for Reminder Model', () => {
   let userID;
   let reminderID;
-  beforeEach(async () => {
+  beforeAll(async () => {
     const user1 = await userModel.addUser({ name: "Andrew Taylor", email: "andrew123@gmail.com",password: "andrew123!", role: "regular"});
     const reminder1 = await reminderModel.create({ title: "Grocery shopping", description: "Buy milk and bread from safeway", completed: false, dateCreated: new Date(), userId: user1.id });
     user1ID = user1.id;
     reminder1ID = reminder1.id;
   });
 
-  afterEach(async () => {
+  afterAll(async () => {
     await prisma.reminder.deleteMany();
     await prisma.user.deleteMany();
   });
