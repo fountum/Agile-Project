@@ -2,7 +2,7 @@ const userModel = require('../models/userModel');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-describe('User Model', () => {
+describe('Tests for User Model', () => {
     afterEach(async () => {
         await prisma.user.deleteMany();
       });

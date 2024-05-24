@@ -15,7 +15,7 @@ model User {
   role     String
 }
 
-model reminder {
+model Reminder {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   completed   Boolean
   dateCreated DateTime @db.Date
